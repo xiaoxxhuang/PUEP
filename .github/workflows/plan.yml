@@ -37,4 +37,4 @@ jobs:
         
       - name: Terraform Plan
         working-directory: ./terraform
-        run: cd /terraform && terraform plan
+        run: terraform plan
