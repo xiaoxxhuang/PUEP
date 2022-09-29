@@ -9,11 +9,6 @@ terraform {
   required_version = ">= 1.2.9"
 }
 
-provider "aws" {
-  profile = "puep-terraform"
-  region  = "ap-southeast-1"
-}
-
 module "puep_dynamodb" {
   source = "./modules/dynamodb"
 }

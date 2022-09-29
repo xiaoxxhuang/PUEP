@@ -4,7 +4,7 @@ variable "project_name" {
   value       = "puep"
 }
 
-variable "env" {
+variable "environment" {
   description = "Environment of the project."
   type        = string
   value       = "dev" 
