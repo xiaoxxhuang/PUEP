@@ -10,11 +10,11 @@ terraform {
 }
 
 module "puep_dynamodb_dev" {
-  source = "./modules/dynamodb"
+  source = "./modules/data-storage"
   environment = "dev"
 }
 
 module "puep_dynamodb_prod" {
-  source = "./modules/dynamodb"
+  source = "./modules/data-storage"
   environment = "prod"
 }
