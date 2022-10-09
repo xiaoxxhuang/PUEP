@@ -9,3 +9,9 @@ variable "project_name" {
   type        = string
   default     = "puep"
 }
+
+variable "acl_value" {
+  description = "Access control lists(ACLs) manage access to buckets and objects"
+  type        = string
+  default     = "private"
+}
