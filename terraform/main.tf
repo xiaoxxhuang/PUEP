@@ -5,26 +5,11 @@ terraform {
       version = "~> 3.27"
     }
   }
-
+  backend "s3" {
+    bucket = "puep-state-s3-bucket"
+    key    = "tf-workspaces/terraform.tfstate"
+    region = "ap-southeast-1"
+    dynamodb_table = "puep-dev-state-lock-ddb"
+  }
   required_version = ">= 1.2.9"
 }
-
-module "puep_dev_ddb" {
-  source = "./modules/data-storage"
-  environment = "dev"
-}
-
-module "puep_prod_ddb" {
-  source = "./modules/data-storage"
-  environment = "prod"
-}
-
-module "puep_dev_s3_bucket" {
-  source = "./modules/data-storage"
-  environment = "dev"
-}
-
-# resource "aws_apigatewayv2_api" "lambda" {
-#   name          = "serverless_lambda_gw"
-#   protocol_type = "HTTP"
-# }
