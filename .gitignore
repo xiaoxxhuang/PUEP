@@ -1,3 +1,6 @@
 # Local .terraform directories
 **/.terraform/*
 **terraform.tfstate**
+
+# Lambda zipped function
+**hello-world.zip

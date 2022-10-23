@@ -10,11 +10,11 @@ variable "project_name" {
   default     = "puep"
 }
 
-# variable "acl_value" {
-#   description = "Access control lists(ACLs) manage access to buckets and objects"
-#   type        = string
-#   default     = "private"
-# }
+variable "acl_value" {
+  description = "Access control lists(ACLs) manage access to buckets and objects"
+  type        = string
+  default     = "private"
+}
 
 locals {
   environment = lower(terraform.workspace)
