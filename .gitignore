@@ -4,3 +4,8 @@
 
 # Lambda zipped function
 **hello-world.zip
+
+# Ignore CLI configuration files
+node_modules/
+dist/
+coverage/
