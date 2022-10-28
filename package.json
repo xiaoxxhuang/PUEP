@@ -1,0 +1,28 @@
+{
+  "name": "@puep/root",
+  "version": "0.0.1",
+  "description": "Pokemon Unite Emblem Planner",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoxxhuang/PUEP.git"
+  },
+  "keywords": [],
+  "author": "Chuah Sheou Shuang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaoxxhuang/PUEP/issues"
+  },
+  "homepage": "https://github.com/xiaoxxhuang/PUEP#readme",
+  "workspaces": [
+    "backend/*"
+  ],
+  "scripts": {
+    "test": "npx lerna run test --stream --concurrency=2",
+    "build": "npx lerna run build --stream --concurrency=2",
+    "start": "node src"
+  },
+  "devDependencies": {
+    "lerna": "^5.6.2"
+  }
+}

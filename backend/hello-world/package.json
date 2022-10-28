@@ -1,0 +1,26 @@
+{
+  "name": "@puep/hello-world",
+  "version": "0.0.1",
+  "main": "src/hello",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoxxhuang/PUEP.git"
+  },
+  "keywords": [],
+  "author": "Chuah Sheou Shuang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaoxxhuang/PUEP/issues"
+  },
+  "homepage": "https://github.com/xiaoxxhuang/PUEP#readme",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "npx test --coverage --forceExit --detectOpenHandles --runInBand"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.108",
+    "@types/jest":"^26.0.22",
+    "jest": "^26.6.3",
+    "typescript": "^4.7.4"
+  }
+}
