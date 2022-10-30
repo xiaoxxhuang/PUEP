@@ -28,8 +28,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.9
-        
-
       # Runs a single command using the runners shell
       - name: Terraform Init
         working-directory: ./terraform
@@ -50,3 +48,15 @@ jobs:
         run: yarn
       - name: Yarn Build
         run: yarn build
+      - name: Yarn Test
+        run: yarn test
+  test:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mskelton/setup-yarn@v1
+        with:
+          node-version: '16.x'
+      - name: Yarn Test
+        run: yarn test
