@@ -10,17 +10,17 @@
   "keywords": [],
   "author": "Chuah Sheou Shuang",
   "license": "ISC",
+  "private": "true",
   "bugs": {
     "url": "https://github.com/xiaoxxhuang/PUEP/issues"
   },
   "homepage": "https://github.com/xiaoxxhuang/PUEP#readme",
   "workspaces": [
-    "backend/*"
+    "packages/*"
   ],
   "scripts": {
-    "test": "npx lerna run test --stream --concurrency=2",
-    "build": "npx lerna run build --stream --concurrency=2",
-    "start": "node src"
+    "test": "npx lerna run test --stream",
+    "build": "npx lerna run build --stream"
   },
   "devDependencies": {
     "lerna": "^5.6.2"
