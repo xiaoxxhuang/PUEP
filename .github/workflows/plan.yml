@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Terraform Plan
+name: Plan on dev
 
 # Controls when the workflow will run
 on:
@@ -10,13 +10,13 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  # The type of runner that the job will run on
+  runs-on: ubuntu-latest
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "deploy"
-  plan:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+  terraform-plan:
     env:
       TF_WORKSPACE: "dev"
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -28,8 +28,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.9
-        
-
       # Runs a single command using the runners shell
       - name: Terraform Init
         working-directory: ./terraform
@@ -38,3 +36,12 @@ jobs:
       - name: Terraform Plan
         working-directory: ./terraform
         run: terraform plan
+  install:
+    # runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mskelton/setup-yarn@v1
+        with:
+          node-version: '16.x'
+      - name: Yarn Installation
+        run: yarn
