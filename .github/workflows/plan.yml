@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Plan on dev
+name: Plan
 
 # Controls when the workflow will run
 on:
@@ -48,8 +48,6 @@ jobs:
         run: yarn
       - name: Yarn Build
         run: yarn build
-      - name: Yarn Test
-        run: yarn test
   test:
     runs-on: ubuntu-latest
     needs: setup
