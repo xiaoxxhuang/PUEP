@@ -1,7 +1,7 @@
 data "archive_file" "lambda_hello_world" {
   type = "zip"
 
-  source_dir  = "../packages/hello-world/dist"
+  source_dir  = "hello-world-artifacts"
   output_path = "${path.module}/hello-world.zip"
 }
 
