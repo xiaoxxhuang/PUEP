@@ -8,9 +8,6 @@ export const lambdaHandler = async (
   console.log(`Context: ${JSON.stringify(context, null, 2)}`);
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
       message: "hello world",
     }),

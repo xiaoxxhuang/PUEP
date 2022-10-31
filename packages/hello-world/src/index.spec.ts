@@ -11,9 +11,6 @@ describe("lambdaHandler", () => {
     const context = {} as Context;
     const expectedResult: APIGatewayProxyResult = {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         message: "hello world",
       }),
