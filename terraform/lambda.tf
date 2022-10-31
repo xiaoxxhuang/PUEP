@@ -1,7 +1,7 @@
 data "archive_file" "lambda_hello_world" {
   type = "zip"
 
-  source_dir  = "dist"
+  source_dir  = "/home/runner/work/PUEP/PUEP/"
   output_path = "${path.module}/hello-world.zip"
 }
 
