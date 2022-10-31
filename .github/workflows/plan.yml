@@ -53,9 +53,9 @@ jobs:
         with:
           terraform_version: 1.2.9
       - name: list folder
-        run: ls -lf
-      - name: list hello world folder
-        run: cd packages/hello-world && ls -lfr
+        run: ls -lr
+      - name: list path
+        run: pwd
       # Runs a single command using the runners shell
       - name: Terraform Init
         working-directory: ./terraform
