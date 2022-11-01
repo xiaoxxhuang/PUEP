@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: hello-world-artifacts
-          path: packages/hello-world/dist
+          path: packages/hello-world/dist/
       
   terraform-plan:
     # The type of runner that the job will run on
@@ -44,12 +44,17 @@ jobs:
       AWS_DEFAULT_REGION: ap-southeast-1
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v2
       - name: Download hello-world/dist artifacts
         uses: actions/download-artifact@v3
         with:
           name: hello-world-artifacts
-          path: packages/hello-world/dist
-      - uses: actions/checkout@v2
+          path: packages/hello-world/dist/
+      - name: Display structure of downloaded files
+        run: ls -lr
+        working-directory: ./packages/hello-world/dist
+      - name: 'Echo download path'
+        run: echo ${{steps.download.outputs.download-path}}
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.9
@@ -66,6 +71,6 @@ jobs:
       - name: Terraform Plan
         working-directory: ./terraform
         run: terraform plan
-      - name: Terraform Apply
-        working-directory: ./terraform
-        run: terraform apply -auto-approve
+      # - name: Terraform Apply
+      #   working-directory: ./terraform
+      #   run: terraform apply -auto-approve
