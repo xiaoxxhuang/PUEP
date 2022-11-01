@@ -1,7 +1,7 @@
 import { lambdaHandler } from "./index";
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
-describe("lambdaHandler", async () => {
+describe("lambdaHandler", () => {
   it("should return expected result", async() => {
     const event = {
       body: {
