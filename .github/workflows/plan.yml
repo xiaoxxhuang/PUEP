@@ -56,7 +56,7 @@ jobs:
       - name: list folder
         run: ls -lr
       - name: list packages
-        run: cd packages && ls -lf
+        run: cd packages/hello-world && ls -lf
       - name: list path
         run: pwd
       # Runs a single command using the runners shell
