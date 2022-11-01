@@ -48,6 +48,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: hello-world-artifacts
+          path: packages/hello-world/dist
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v2
         with:
