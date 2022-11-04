@@ -6,55 +6,56 @@ name: Plan
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+env:
+  TF_WORKSPACE: "dev"
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ap-southeast-1
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "deploy"
-  terraform-plan:
+  setup:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env:
-      TF_WORKSPACE: "dev"
-      AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: ap-southeast-1
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+      - name: Yarn Installation
+        run: yarn
+      - name: Yarn Test
+        run: yarn test
+      - name: Yarn Build
+        run: yarn build
+      - name: Upload hello-world/dist artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello-world-artifacts
+          path: packages/hello-world/dist/
+
+  terraform-plan:
+    runs-on: ubuntu-latest
+    needs: setup
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+      - name: Download hello-world/dist artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: hello-world-artifacts
+          path: packages/hello-world/dist/
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.9
-      # Runs a single command using the runners shell
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
-        
       - name: Terraform Plan
         working-directory: ./terraform
         run: terraform plan
-  setup:
-    runs-on: ubuntu-latest
-    needs: terraform-plan
-    steps:
-      - uses: actions/checkout@v2
-      - uses: mskelton/setup-yarn@v1
-        with:
-          node-version: '16.x'
-      - name: Yarn Installation
-        run: yarn
-      - name: Yarn Build
-        run: yarn build
-  test:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v2
-      - uses: mskelton/setup-yarn@v1
-        with:
-          node-version: '16.x'
-      - name: Yarn Test
-        run: yarn test

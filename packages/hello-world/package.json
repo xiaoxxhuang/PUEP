@@ -1,7 +1,7 @@
 {
   "name": "@puep/hello-world",
   "version": "0.0.1",
-  "main": "src/hello",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xiaoxxhuang/PUEP.git"
