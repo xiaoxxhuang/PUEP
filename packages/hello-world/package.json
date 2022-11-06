@@ -15,7 +15,7 @@
   "homepage": "https://github.com/xiaoxxhuang/PUEP#readme",
   "scripts": {
     "build": "npx tsc",
-    "test": "npx jest"
+    "test": "npx jest --coverage"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.108",

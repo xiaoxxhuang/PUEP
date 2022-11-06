@@ -1,63 +1,31 @@
-import { APIGatewayProxyResult, APIGatewayProxyHandler } from "aws-lambda";
-import { getEmblemByName } from "./query";
+import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
+import { getEmblemByPkmAndType } from "./query";
+import { IDBEmblem } from "./types";
 
-export const lambdaHandler: APIGatewayProxyHandler = async (
-  event
+export const lambdaHandler = async (
+  event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const pkm = event.queryStringParameters?.pkm;
   const type = event.queryStringParameters?.type;
-  try {
-    if (pkm && type) {
-      return {
-        statusCode: 200,
-        body: `Body: ${await getEmblemByName(
-          pkm,
-          type
-        )}; pkm: ${pkm}; type: ${type} \n Event: ${event}`,
-      };
-    }
-  } catch (error) {
-    console.log(error);
+  if (pkm && type) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: "ok",
+        data: await getEmblemData(pkm, type),
+      }),
+    };
   }
   return {
     statusCode: 400,
-    body: "Emblem Not Found",
+    body: "Pkm and Type not provided",
   };
 };
 
-// export function requestValidator(schema: Schema) {
-//   return async (request: Request, response: Response, next: NextFunction) => {
-//     try {
-//       if (schema) {
-//         await schema.validateAsync(request.params);
-//       }
-//       next();
-//     } catch (e) {
-//       next(e);
-//     }
-//   };
-// }
-
-// const getEmblemSchema = Joi.object({
-//   version: Joi.string().required(),
-//   pkm: Joi.string().required(),
-//   type: Joi.string().required(),
-// });
-
-// const router = Router();
-
-// router
-//   .get(
-//     "/puep/:version/emblems",
-//     requestValidator(getEmblemSchema),
-//     asyncHandler(emblemHandler)
-//   )
-
-// export default express().use(router);
-
-// const defaultPortNumber = 9000;
-// const port = Number(process.env.PORT || defaultPortNumber);
-
-// express()
-//   .use(router)
-//   .listen(port, () => console.log(`Server running on port ${port}...`));
+async function getEmblemData(
+  pkm: string,
+  type: string
+): Promise<IDBEmblem | {}> {
+  const emblem = await getEmblemByPkmAndType(pkm, type);
+  return emblem ? emblem : {};
+}

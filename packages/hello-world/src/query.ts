@@ -1,48 +1,22 @@
 import { DynamoDB } from "aws-sdk";
-import { IConfigEnvVars } from "./types";
+import { IDBEmblem } from "./types";
+import { Utils } from "./utils";
 
-const config: IConfigEnvVars = {
-  dynamoDb: {
-    tableName: "puep-dev-ddb",
-  },
-  environment: "dev",
-};
-
-function getDocumentClient() {
-  return new DynamoDB.DocumentClient({
-    apiVersion: "2012-08-10",
-    region: "ap-southeast-1",
-  });
-}
-
-export async function getEmblemByName(pkm: string, type: string) {
+export async function getEmblemByPkmAndType(
+  pkm: string,
+  type: string
+): Promise<IDBEmblem | undefined> {
   const params: DynamoDB.DocumentClient.GetItemInput = {
-    TableName: config.dynamoDb.tableName,
+    TableName: Utils.getTableName(),
     Key: {
-      pk: pkm,
-      sk: type,
+      pk: `pkm:${pkm}`,
+      sk: `type:${type}`,
     },
   };
-  const result = await getDocumentClient().get(params).promise();
-  console.log(result);
-  if (result?.Item) return result.Item;
-}
 
-async function parseArg(pkm: string, type: string) {
-  console.log("start");
-  try {
-    if (pkm && type) {
-      const emblem = await getEmblemByName(pkm, type);
-      console.log(emblem);
-      return {
-        statusCode: 200,
-        body: `Body: ${emblem}`,
-      };
-    }
-  } catch (error) {
-    console.log(error);
+  const result = await Utils.getDocumentClient().get(params).promise();
+
+  if (result?.Item) {
+    return result.Item as IDBEmblem;
   }
-  console.log("end");
 }
-
-console.log(parseArg("venasour", "bronze"));
