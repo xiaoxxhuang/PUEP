@@ -1,6 +1,6 @@
 import { DynamoDB } from "aws-sdk";
 import { IDBEmblem } from "./types";
-import { Utils } from "./utils";
+import { Utils } from "../utils";
 
 export async function getEmblemByPkmAndType(
   pkm: string,

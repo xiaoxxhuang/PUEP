@@ -1,67 +1,81 @@
-import { lambdaHandler } from "./index";
 import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
-import { getEmblemByPkmAndType } from "./query";
-import { IDBEmblem } from "./types";
+import { lambdaHandler } from "./index";
+import { emblemHandler } from "./emblems/handler";
+import { pkmHandler } from "./pkms/handler";
 
-jest.mock("./query");
+jest.mock("./emblems/handler");
+jest.mock("./pkms/handler");
 
 describe("lambdaHandler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  describe("getEmblemByPkmAndType()", () => {
+  const dummyEmblemResponse: APIGatewayProxyResult = {
+    statusCode: 200,
+    body: "mock emblem response",
+  };
+  const dummyPkmResponse: APIGatewayProxyResult = {
+    statusCode: 200,
+    body: "mock pkm response",
+  };
+
+  it("should succesfully return emblem result when calling emblemHandler", async () => {
     const dummyProxyEvent = {
       queryStringParameters: {
-        pkm: "venusaur",
-        type: "bronze",
+        param: "dummy_param",
+      },
+      requestContext: {
+        resourceId: "GET /puep/emblems",
       },
     } as any as APIGatewayProxyEvent;
-    const dummyData: IDBEmblem = {
-      pk: "pkm:venusaur",
-      sk: "type:bronze",
-      color: ["green"],
-      attack: -1.2,
-      special_attack: 1.8,
-    };
-    const dummyResult: APIGatewayProxyResult = {
-      statusCode: 200,
-      body: JSON.stringify({
-        status: "ok",
-        data: dummyData,
-      }),
-    };
-
-    it("should succesfully return expected result when pkm and type exist", async () => {
-      (getEmblemByPkmAndType as jest.Mock).mockResolvedValue(dummyData);
-      const result = await lambdaHandler(dummyProxyEvent);
-      expect(result).toStrictEqual(dummyResult);
-    });
-
-    it("should succesfully return expected result when pkm and type not exist", async () => {
-      (getEmblemByPkmAndType as jest.Mock).mockResolvedValue(undefined);
-      const dummyInvalidDataResult = {
-        ...dummyResult,
-        body: JSON.stringify({
-          status: "ok",
-          data: {},
-        }),
-      };
-
-      const result = await lambdaHandler(dummyProxyEvent);
-
-      expect(result).toStrictEqual(dummyInvalidDataResult);
-    });
-
-    it("should return not found when pkm and type not provided", async () => {
-      const dummyInvalidProxyEvent = {} as any as APIGatewayProxyEvent;
-      const dummtInvalidResult: APIGatewayProxyResult = {
-        statusCode: 400,
-        body: "Pkm and Type not provided",
-      };
-
-      const result = await lambdaHandler(dummyInvalidProxyEvent);
-
-      expect(result).toStrictEqual(dummtInvalidResult);
-    });
+    (emblemHandler as jest.Mock).mockResolvedValue(dummyEmblemResponse);
+    const result = await lambdaHandler(dummyProxyEvent);
+    expect(result).toStrictEqual(dummyEmblemResponse);
   });
+
+  it("should succesfully return pkm result when calling pkmHandler", async () => {
+    const dummyProxyEvent = {
+      queryStringParameters: {
+        param: "dummy_param",
+      },
+      requestContext: {
+        resourceId: "GET /puep/pkms",
+      },
+    } as any as APIGatewayProxyEvent;
+    (pkmHandler as jest.Mock).mockResolvedValue(dummyPkmResponse);
+    const result = await lambdaHandler(dummyProxyEvent);
+    expect(result).toStrictEqual(dummyPkmResponse);
+  });
+
+  it("should succesfully return expected result when pkm and type not exist", async () => {
+    const dummyProxyEvent = {
+      queryStringParameters: {
+        param: "dummy_param",
+      },
+      requestContext: {
+        resourceId: "GET /invalid",
+      },
+    } as any as APIGatewayProxyEvent;
+
+    try {
+      await lambdaHandler(dummyProxyEvent);
+    } catch (error) {
+      expect(error).toHaveProperty(
+        "message",
+        "Unsupported route: GET /invalid"
+      );
+    }
+  });
+
+  //   it("should return not found when pkm and type not provided", async () => {
+  //     const dummyInvalidProxyEvent = {} as any as APIGatewayProxyEvent;
+  //     const dummtInvalidResult: APIGatewayProxyResult = {
+  //       statusCode: 400,
+  //       body: "Pkm and Type not provided",
+  //     };
+
+  //     const result = await lambdaHandler(dummyInvalidProxyEvent);
+
+  //     expect(result).toStrictEqual(dummtInvalidResult);
+  //   });
 });

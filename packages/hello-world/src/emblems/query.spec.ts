@@ -1,9 +1,9 @@
 import { getEmblemByPkmAndType } from "./query";
-import { Utils } from "./utils";
+import { Utils } from "../utils";
 import { IDBEmblem } from "./types";
 
 jest.mock("aws-sdk");
-jest.mock("./utils");
+jest.mock("../utils");
 
 describe("Dynamodb query", () => {
   beforeEach(() => {
