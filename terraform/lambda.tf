@@ -26,6 +26,14 @@ resource "aws_lambda_function" "hello_world" {
   source_code_hash = data.archive_file.lambda_hello_world.output_base64sha256
 
   role = aws_iam_role.lambda_role.arn
+
+  environment {
+    variables = {
+      project_name = var.project_name
+      environment = local.environment
+      dynamodb_name = aws_dynamodb_table.puep_ddb.name
+    }
+  }
 }
 
 resource "aws_cloudwatch_log_group" "hello_world" {
