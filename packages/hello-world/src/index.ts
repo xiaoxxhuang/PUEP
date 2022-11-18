@@ -2,18 +2,17 @@ import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
 import { emblemHandler } from "./emblems/handler";
 import { pkmHandler } from "./pkms/handler";
 
+const routes: Record<string, Function> = {
+  emblems: emblemHandler,
+  pkms: pkmHandler,
+  error: () => new Error(`Unsupported route`),
+};
+
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  const route = event.pathParameters?.PROXY;
+  const route = event.pathParameters?.PROXY || "error";
   const queryParam = event.queryStringParameters;
 
-  switch (route) {
-    case "emblems":
-      return await emblemHandler(queryParam);
-    case "pkms":
-      return await pkmHandler(queryParam);
-    default:
-      throw new Error(`Unsupported route: ${route}`);
-  }
+  return await routes[route](queryParam);
 };
