@@ -3,9 +3,9 @@ import { IConfigEnvVars } from "./types";
 
 const config: IConfigEnvVars = {
   dynamoDb: {
-    tableName: "puep-dev-ddb",
+    tableName: process.env.dynamodb_name || "",
   },
-  environment: "dev",
+  environment: process.env.environment as any || "prod",
 };
 
 function getDocumentClient() {

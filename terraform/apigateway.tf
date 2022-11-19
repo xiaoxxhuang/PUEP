@@ -36,12 +36,20 @@ resource "aws_apigatewayv2_integration" "hello_world" {
   integration_method = "POST"
 }
 
-resource "aws_apigatewayv2_route" "hello_world" {
+resource "aws_apigatewayv2_route" "get_emblems" {
   api_id = aws_apigatewayv2_api.lambda.id
 
-  route_key = "GET /puep/emblems"
+  # route_key = "GET /puep/emblems"
+  route_key = "ANY /puep/{PROXY+}"
   target    = "integrations/${aws_apigatewayv2_integration.hello_world.id}"
 }
+
+# resource "aws_apigatewayv2_route" "get_pkms" {
+#   api_id = aws_apigatewayv2_api.lambda.id
+
+#   route_key = "GET /puep/pkms"
+#   target    = "integrations/${aws_apigatewayv2_integration.hello_world.id}"
+# }
 
 resource "aws_cloudwatch_log_group" "api_gw" {
   name = "/aws/api_gw/${aws_apigatewayv2_api.lambda.name}"

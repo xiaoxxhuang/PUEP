@@ -29,8 +29,8 @@ jobs:
           node-version: "16.x"
       - name: Yarn Installation
         run: yarn
-      - name: Yarn Test
-        run: yarn test
+      # - name: Yarn Test
+      #   run: yarn test
       - name: Yarn Build
         run: yarn build
       - name: Upload hello-world/dist artifacts
@@ -59,3 +59,6 @@ jobs:
       - name: Terraform Plan
         working-directory: ./terraform
         run: terraform plan
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve

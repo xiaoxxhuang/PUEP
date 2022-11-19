@@ -1,31 +1,18 @@
 import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
-import { getEmblemByPkmAndType } from "./query";
-import { IDBEmblem } from "./types";
+import { emblemHandler } from "./emblems/handler";
+import { pkmHandler } from "./pkms/handler";
+
+const routes: Record<string, Function> = {
+  emblems: emblemHandler,
+  pkms: pkmHandler,
+  error: () => new Error(`Unsupported route`),
+};
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  const pkm = event.queryStringParameters?.pkm;
-  const type = event.queryStringParameters?.type;
-  if (pkm && type) {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        status: "ok",
-        data: await getEmblemData(pkm, type),
-      }),
-    };
-  }
-  return {
-    statusCode: 400,
-    body: "Pkm and Type not provided",
-  };
-};
+  const route = event.pathParameters?.PROXY || "error";
+  const queryParam = event.queryStringParameters;
 
-async function getEmblemData(
-  pkm: string,
-  type: string
-): Promise<IDBEmblem | {}> {
-  const emblem = await getEmblemByPkmAndType(pkm, type);
-  return emblem ? emblem : {};
-}
+  return await routes[route](queryParam);
+};
