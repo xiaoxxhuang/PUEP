@@ -3,7 +3,7 @@
 **terraform.tfstate**
 
 # Lambda zipped function
-**hello-world.zip
+**.zip
 
 # Ignore CLI configuration files
 node_modules/

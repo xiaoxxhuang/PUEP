@@ -1,18 +1,16 @@
 {
-    "compilerOptions": {
-        "target": "ES2019",
-        "module": "commonjs",
-        "resolveJsonModule": true,
-        "declaration": true,
-        "removeComments": true,
-        "importHelpers": false,
-        "downlevelIteration": true,
-        "strict": true,
-        "esModuleInterop":true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "lib": [
-            "ES2019"
-        ]
-    }
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "removeComments": true,
+    "importHelpers": false,
+    "downlevelIteration": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2019"]
+  }
 }
