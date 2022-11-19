@@ -1,0 +1,1 @@
+export type NODE_ENV = "local" | "prod" | "stage" | "dev";

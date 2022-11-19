@@ -24,8 +24,8 @@ describe("lambdaHandler", () => {
       queryStringParameters: {
         param: "dummy_param",
       },
-      requestContext: {
-        resourceId: "GET /puep/emblems",
+      pathParameters: {
+        PROXY: "emblems",
       },
     } as any as APIGatewayProxyEvent;
     (emblemHandler as jest.Mock).mockResolvedValue(dummyEmblemResponse);
@@ -38,8 +38,8 @@ describe("lambdaHandler", () => {
       queryStringParameters: {
         param: "dummy_param",
       },
-      requestContext: {
-        resourceId: "GET /puep/pkms",
+      pathParameters: {
+        PROXY: "pkms",
       },
     } as any as APIGatewayProxyEvent;
     (pkmHandler as jest.Mock).mockResolvedValue(dummyPkmResponse);
@@ -47,13 +47,10 @@ describe("lambdaHandler", () => {
     expect(result).toStrictEqual(dummyPkmResponse);
   });
 
-  it("should succesfully return expected result when pkm and type not exist", async () => {
+  it("should succesfully throw error when proxy not exist", async () => {
     const dummyProxyEvent = {
       queryStringParameters: {
         param: "dummy_param",
-      },
-      requestContext: {
-        resourceId: "GET /invalid",
       },
     } as any as APIGatewayProxyEvent;
 
@@ -62,20 +59,8 @@ describe("lambdaHandler", () => {
     } catch (error) {
       expect(error).toHaveProperty(
         "message",
-        "Unsupported route: GET /invalid"
+        "Unsupported route"
       );
     }
   });
-
-  //   it("should return not found when pkm and type not provided", async () => {
-  //     const dummyInvalidProxyEvent = {} as any as APIGatewayProxyEvent;
-  //     const dummtInvalidResult: APIGatewayProxyResult = {
-  //       statusCode: 400,
-  //       body: "Pkm and Type not provided",
-  //     };
-
-  //     const result = await lambdaHandler(dummyInvalidProxyEvent);
-
-  //     expect(result).toStrictEqual(dummtInvalidResult);
-  //   });
 });
