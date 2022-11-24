@@ -7,6 +7,7 @@ resource "aws_s3_bucket_acl" "puep_s3_bucket_acl" {
   acl    = var.acl_value
 }
 
+# ------------------------------------------------------------------------ 
 resource "aws_s3_bucket" "puep_website_s3_bucket" {
   bucket = "${var.project_name}-${local.environment}-website-s3-bucket"
 }
@@ -42,7 +43,7 @@ resource "aws_s3_bucket_policy" "website_policy" {
           "Effect" : "Allow",
           "Principal" : "*",
           "Action" : "s3:GetObject",
-          "Resource" : "arn:aws:s3:::${aws_s3_bucket.puep_website_s3_bucket.id}/*"
+          "Resource" : "arn:aws:s3:::${aws_s3_bucket.puep_website_s3_bucket.arn}/*"
         }
       ]
     }
