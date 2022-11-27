@@ -53,7 +53,8 @@ resource "aws_s3_bucket_policy" "website_policy" {
 resource "aws_s3_object" "website_index" {
   bucket       = aws_s3_bucket.puep_website_s3_bucket.id
   for_each     = fileset("../packages/react-app/build/","*")
-  key          = "../packages/react-app/build/${each.value}"
+  key          = "${each.value}"
   source       = "../packages/react-app/build/${each.value}"
   acl          = "public-read"
+  etag   = filemd5("../packages/react-app/build/${each.value}")
 }
