@@ -53,7 +53,7 @@ resource "aws_s3_bucket_policy" "website_policy" {
 resource "aws_s3_object" "website_index" {
   bucket       = aws_s3_bucket.puep_website_s3_bucket.bucket
   key          = "index.html"
-  source       = "../packages/frontend/index.html"
+  source       = "../packages/react-app/build/index.html"
   acl          = "public-read"
   content_type = "text/html"
 }
