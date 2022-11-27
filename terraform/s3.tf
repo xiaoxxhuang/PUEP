@@ -51,9 +51,9 @@ resource "aws_s3_bucket_policy" "website_policy" {
 }
 
 resource "aws_s3_object" "website_index" {
-  bucket       = aws_s3_bucket.puep_website_s3_bucket.bucket
-  key          = "index.html"
-  source       = "../packages/react-app/build/index.html"
+  bucket       = aws_s3_bucket.puep_website_s3_bucket.id
+  for_each     = fileset("../packages/react-app/build/","*")
+  key          = "../packages/react-app/build/${each.value}"
+  source       = "../packages/react-app/build/${each.value}"
   acl          = "public-read"
-  content_type = "text/html"
 }
