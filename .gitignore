@@ -10,3 +10,8 @@ node_modules/
 dist/
 coverage/
 .DS_Store
+
+build/
+
+yarn-debug.log*
+yarn-error.log*
