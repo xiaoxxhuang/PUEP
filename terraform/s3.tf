@@ -56,5 +56,6 @@ resource "aws_s3_object" "website_index" {
   key          = "${each.value}"
   source       = "../packages/react-app/build/${each.value}"
   acl          = "public-read"
+  content_type = lookup(local.mimes, element(reverse(split(".", each.value)), 0), "")
   etag   = filemd5("../packages/react-app/build/${each.value}")
 }
