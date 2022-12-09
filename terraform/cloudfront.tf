@@ -1,6 +1,15 @@
+resource "aws_cloudfront_origin_access_control" "frontend_access" {
+  name                              = "frontend_access"
+  description                       = "CloudFront access to s3 policy"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "frontend" {
   origin {
     domain_name = aws_s3_bucket.puep_website_s3_bucket.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.frontend_access.id
     origin_id   = "s3-${local.environment}"
   }
 
