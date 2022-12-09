@@ -45,16 +45,22 @@ resource "aws_s3_bucket_policy" "puep_website_policy" {
   bucket = aws_s3_bucket.puep_website_s3_bucket.id
   policy = jsonencode(
     {
-      "Version" : "2012-10-17",
-      "Statement" : [
+      "Version": "2008-10-17",
+      "Id": "PolicyForCloudFrontPrivateContent",
+      "Statement": [
         {
-          "Sid" : "1",
-          "Effect" : "Allow",
-          "Principal" : {
-		        "AWS": "arn:aws:cloudfront::385526948728:distribution/E377H9VW6UCVZM"
-		      },
-          "Action" : "s3:GetObject",
-          "Resource" : "arn:aws:s3:::${aws_s3_bucket.puep_website_s3_bucket.id}/*"
+          "Sid": "AllowCloudFrontServicePrincipal",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "cloudfront.amazonaws.com"
+          },
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws:s3:::puep-dev-website-s3-bucket/*",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceArn": "arn:aws:cloudfront::385526948728:distribution/E377H9VW6UCVZM"
+            }
+          }
         }
       ]
     }
