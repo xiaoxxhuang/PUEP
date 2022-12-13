@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     max_ttl                = 86400
   }
 
-  price_class = "PriceClass_100"
+  price_class = "PriceClass_200"
 
   viewer_certificate {
     cloudfront_default_certificate = true
