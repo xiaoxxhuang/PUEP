@@ -1,0 +1,10 @@
+.Title {
+  text-align: center;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: black;
+  border: none;
+  border-bottom: 1px solid black;
+}

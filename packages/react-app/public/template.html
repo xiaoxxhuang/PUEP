@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link type="text/css" rel="stylesheet" href="index.css" />
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <div id="filter_div" style="margin: 10px">
+      <div style="display: flex; justify-content: flex-end">
+        <button>Filter</button>
+      </div>
+      <div>
+        <form>
+          <div>
+            <div style="display: inline">
+              Primary Focus:
+              <input type="radio" id="hp_1" name="primary_focus" value="HP" />
+              <label for="hp_1">HP</label>
+              <input
+                type="radio"
+                id="atk_1"
+                name="primary_focus"
+                value="attack"
+              />
+              <label for="atk_1">Attack</label>
+              <input
+                type="radio"
+                id="sp_atk_1"
+                name="primary_focus"
+                value="special_attack"
+              />
+              <label for="sp_atk_1">Sp. Atk</label>
+              <input
+                type="radio"
+                id="def_1"
+                name="primary_focus"
+                value="defense"
+              />
+              <label for="def_1">Defense</label>
+              <input
+                type="radio"
+                id="sp_def_1"
+                name="primary_focus"
+                value="special_defense"
+              />
+              <label for="sp_def_1">Sp. Def</label>
+              <input
+                type="radio"
+                id="ms_1"
+                name="primary_focus"
+                value="movement_speed"
+              />
+              <label for="ms_1">Movement Speed</label>
+              <input
+                type="radio"
+                id="cr_1"
+                name="primary_focus"
+                value="critical_rate"
+              />
+              <label for="cr_1">Crit. Hit Rate</label>
+              <input
+                type="radio"
+                id="cd_1"
+                name="primary_focus"
+                value="cooldown"
+              />
+              <label for="cd_1">Cooldown</label>
+            </div>
+          </div>
+          <br />
+          <div>
+            <div style="display: inline">
+              Secondary Focus:
+              <input type="radio" id="hp_2" name="secondary_focus" value="HP" />
+              <label for="hp_2">HP</label>
+              <input
+                type="radio"
+                id="atk_2"
+                name="secondary_focus"
+                value="attack"
+              />
+              <label for="atk_2">Attack</label>
+              <input
+                type="radio"
+                id="sp_atk_2"
+                name="secondary_focus"
+                value="special_attack"
+              />
+              <label for="sp_atk_2">Sp. Atk</label>
+              <input
+                type="radio"
+                id="def_2"
+                name="secondary_focus"
+                value="defense"
+              />
+              <label for="def_2">Defense</label>
+              <input
+                type="radio"
+                id="sp_def_2"
+                name="secondary_focus"
+                value="special_defense"
+              />
+              <label for="sp_def_2">Sp. Def</label>
+              <input
+                type="radio"
+                id="ms_2"
+                name="secondary_focus"
+                value="movement_speed"
+              />
+              <label for="ms_2">Movement Speed</label>
+              <input
+                type="radio"
+                id="cr_2"
+                name="secondary_focus"
+                value="critical_rate"
+              />
+              <label for="cr_2">Crit. Hit Rate</label>
+              <input
+                type="radio"
+                id="cd_2"
+                name="secondary_focus"
+                value="cooldown"
+              />
+              <label for="cd_2">Cooldown</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="emblems_div" style="display: flex; justify-content: space-evenly;">
+      <div
+        id="circle_container"
+        style="
+          z-index: 9;
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 350px;
+          height: 350px;
+        "
+      >
+        <div
+          style="
+            transform: rotate(0deg) translate(125px) rotate(0deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(36deg) translate(125px) rotate(-36deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(72deg) translate(125px) rotate(-72deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(108deg) translate(125px) rotate(-108deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(144deg) translate(125px) rotate(-144deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(180deg) translate(125px) rotate(-180deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(216deg) translate(125px) rotate(-216deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(252deg) translate(125px) rotate(-252deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(288deg) translate(125px) rotate(-288deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+        <div
+          style="
+            transform: rotate(324deg) translate(125px) rotate(-324deg);
+            background-color: grey;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 74px;
+            height: 74px;
+            margin: -37px;
+          "
+        ></div>
+      </div>
+      <div>
+        <div style="padding: 100px 20px; width: 200px">
+          <div style="font-size: 1.5rem">Current Effect</div>
+          <div style="display: flex; justify-content: space-between">
+            <span>HP</span>
+            <span>+80</span>
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            <span>Attack</span>
+            <span>-4.8</span>
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            <span>Defense</span>
+            <span>+5</span>
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            <span>Sp. Def</span>
+            <span>+4</span>
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            <span>Critical-Hit Rate</span>
+            <span>-0.7%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="emblems_message" style="display: block">
+      <p>
+        **Hover and click on the emblems to remove the emblems that you do not
+        owned. It will proposed the second options for you.
+      </p>
+    </div>
+    <div id="pick_pkm_div">
+      <div style="display: flex; justify-content: space-evenly;">
+        <div style="display: flex; justify-content: space-evenly; border: 1px grey solid;">
+          <div style="padding: 5px; margin: 5px; display:flex; width: 74px; height: 128px; background-color: grey"></div>
+          <div style="padding: 5px; margin: 5px; display:flex; width: 74px; height: 128px; background-color: grey"></div>
+          <div style="padding: 5px; margin: 5px; display:flex; width: 74px; height: 128px; background-color: grey"></div>
+        </div>
+        <div>
+          <div style="padding: 100px 20px; width: 200px">
+            <div style="font-size: 1.5rem">Effect on Pokemon: Venusaur</div>
+            <div style="display: flex; justify-content: space-between">
+              <span>HP</span>
+              <span>6580</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Attack</span>
+              <span>288.2</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Sp. Atk</span>
+              <span>962</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Attack Speed</span>
+              <span>20.21%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Defense</span>
+              <span>230</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Sp. Def</span>
+              <span>174</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Cooldown Rate</span>
+              <span>25%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Critical-Hit Rate</span>
+              <span>0%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <span>Lifesteal</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
