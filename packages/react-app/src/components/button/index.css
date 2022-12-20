@@ -1,10 +1,9 @@
-.Title {
+.puep-button {
   text-align: center;
-  background-color: white;
+  background-color: #282c34;
   align-items: center;
   justify-content: center;
   display: flex;
-  color: black;
+  color: white;
   border: none;
-  border-bottom: 1px solid black;
 }
