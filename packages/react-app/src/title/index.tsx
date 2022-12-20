@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { memo } from "react";
 import "./index.css";
 
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -11,4 +11,4 @@ function Title(props: Props) {
   return <h1 className={className}>{children}</h1>;
 }
 
-export default Title;
+export default memo(Title);
