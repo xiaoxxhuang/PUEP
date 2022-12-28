@@ -4,7 +4,7 @@ import Label from "./index";
 describe("Render Label", () => {
   it("Should display with text `Primary Focus`, have class puep-label", () => {
     const { getByText } = render(
-      <Label children="Primary Focus" className="puep-label" />
+      <Label children="Primary Focus" />
     );
     const labelElement = getByText("Primary Focus");
     expect(labelElement).toBeInTheDocument();

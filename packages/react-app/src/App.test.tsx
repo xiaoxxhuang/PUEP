@@ -12,8 +12,9 @@ describe("renders learn react link", () => {
   });
 
   it("Should check a radio button when the radio button is selected", () => {
-    const radioButton2: HTMLInputElement = screen.getByLabelText("Attack");
-    fireEvent.click(radioButton2);
-    expect(radioButton2.checked).toEqual(true);
+    const attackRadioButtons: HTMLInputElement[] = screen.getAllByLabelText("Attack");
+    expect(attackRadioButtons[0]).not.toBeChecked();
+    fireEvent.click(attackRadioButtons[0]);
+    expect(attackRadioButtons[0]).toBeChecked();
   });
 });

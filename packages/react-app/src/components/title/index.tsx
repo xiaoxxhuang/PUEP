@@ -6,8 +6,8 @@ export interface Props extends React.HTMLProps<HTMLHeadingElement> {
 }
 
 function Title(props: Props) {
-  const { children } = props;
-  return <h1 className="puep-title">{children}</h1>;
+  const { children, ...rest } = props;
+  return <h1 className="puep-title" {...rest}>{children}</h1>;
 }
 
 export default memo(Title);

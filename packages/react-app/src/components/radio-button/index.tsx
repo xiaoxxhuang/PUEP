@@ -12,10 +12,10 @@ export interface Props{
 }
 
 function RadioButtonGroup(props: Props) {
-  const { options, value, onChange } = props;
+  const { options, value, onChange, ...rest } = props;
 
   const radioButtons = options.map((option) => (
-    <label key={option.value}>
+    <label key={option.value} className="puep-radiobutton-label">
       <input
         type="radio"
         value={option.value}
@@ -25,7 +25,7 @@ function RadioButtonGroup(props: Props) {
       {option.label}
     </label>
   ));
-  return <div>{radioButtons}</div>;
+  return <div className="puep-radiobutton-div" {...rest}>{radioButtons}</div>;
 }
 
 export default memo(RadioButtonGroup);

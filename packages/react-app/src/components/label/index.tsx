@@ -6,8 +6,8 @@ export interface Props extends React.HTMLProps<HTMLSpanElement> {
 }
 
 function Label(props: Props) {
-  const { children } = props;
-  return <span className="puep-label">{children}</span>;
+  const { children, ...rest } = props;
+  return <span className="puep-label" {...rest}>{children}</span>;
 }
 
 export default memo(Label);
