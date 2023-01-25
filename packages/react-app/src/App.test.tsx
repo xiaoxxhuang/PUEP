@@ -1,8 +1,20 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen, fireEvent } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe("renders learn react link", () => {
+  beforeEach(() => {
+    render(<App />);
+  });
+
+  it("Should render the App element", () => {
+    const linkElement = screen.getByText(/learn react/i);
+    expect(linkElement).toBeInTheDocument();
+  });
+
+  it("Should check a radio button when the radio button is selected", () => {
+    const attackRadioButtons: HTMLInputElement[] = screen.getAllByLabelText("Attack");
+    expect(attackRadioButtons[0]).not.toBeChecked();
+    fireEvent.click(attackRadioButtons[0]);
+    expect(attackRadioButtons[0]).toBeChecked();
+  });
 });

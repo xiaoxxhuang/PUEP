@@ -1,19 +1,18 @@
-import * as React from "react";
+import React, { memo } from "react";
 import "./index.css";
 
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: string;
   disabled: boolean;
-  className: string;
 }
 
 function Button(props: Props) {
-  const { children, disabled, className, ...rest } = props;
+  const { children, disabled, ...rest } = props;
   return (
-    <button disabled={disabled} className={className} {...rest}>
+    <button disabled={disabled} className="puep-button" {...rest}>
       <span>{children}</span>
     </button>
   );
 }
 
-export default Button;
+export default memo(Button);

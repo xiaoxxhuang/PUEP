@@ -1,9 +1,9 @@
-.Button {
+.puep-label {
   text-align: center;
-  background-color: #282c34;
+  background-color: white;
   align-items: center;
   justify-content: center;
-  display: flex;
-  color: white;
+  display: inline;
+  color: black;
   border: none;
 }
