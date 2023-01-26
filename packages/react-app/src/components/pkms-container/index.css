@@ -1,0 +1,17 @@
+.puep-pkms-container {
+  display: inline-block;
+  justify-content: space-evenly;
+  border: 1px grey solid;
+  width: 350px;
+  height: 350px;
+  overflow-y: auto;
+}
+
+.puep-pkm {
+  padding: 5px;
+  margin: 5px;
+  display: inline-block;
+  min-width: 80px;
+  height: 128px;
+  background-color: grey;
+}

@@ -1,0 +1,28 @@
+.puep-stat {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+.puep-stats {
+  display: block;
+  position: relative;
+  padding: 20px;
+}
+
+.puep-stats-container {
+  width: 350px;
+}
+
+.puep-title {
+  text-align: center;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: black;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 0px 20px;
+  margin: 0px auto;
+}

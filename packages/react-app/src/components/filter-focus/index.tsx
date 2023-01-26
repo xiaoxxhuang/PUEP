@@ -1,18 +1,19 @@
-import React, { memo } from "react";
+import React from "react";
 import "./index.css";
 
 export interface RadioButtonOptions {
   value: string;
   label: string;
 }
-export interface Props{
+export interface Props {
   options: RadioButtonOptions[];
   value: string;
+  children: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function RadioButtonGroup(props: Props) {
-  const { options, value, onChange, ...rest } = props;
+function FilterFocus(props: Props) {
+  const { options, value, children, onChange, ...rest } = props;
 
   const radioButtons = options.map((option) => (
     <label key={option.value} className="puep-radiobutton-label">
@@ -25,7 +26,14 @@ function RadioButtonGroup(props: Props) {
       {option.label}
     </label>
   ));
-  return <div className="puep-radiobutton-div" {...rest}>{radioButtons}</div>;
+  return (
+    <div className="puep-radiobuttongroup-container">
+      <span className="puep-label">{children}</span>
+      <div className="puep-radiobutton-div" {...rest}>
+        {radioButtons}
+      </div>
+    </div>
+  );
 }
 
-export default memo(RadioButtonGroup);
+export default FilterFocus;
