@@ -61,8 +61,8 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="puep-app">
+      <header className="puep-app-header">
         <p>Pokemon Unite Emblems Planner</p>
       </header>
       <div>
@@ -107,6 +107,9 @@ function App() {
             />
           </div>
         </div>
+      </div>
+      <div className="puep-app-footer">
+        <p></p>
       </div>
     </div>
   );

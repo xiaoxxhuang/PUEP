@@ -1,4 +1,4 @@
-.App {
+.puep-app {
   text-align: center;
   background-image: url("../public/images/pkm-background2.png");
   background-repeat: no-repeat, repeat;
@@ -7,7 +7,7 @@
   background-color: #cccccc;
 }
 
-.App-header {
+.puep-app-header, .puep-app-footer {
   background-color: #282c34;
   display: flex;
   font-size: large;
