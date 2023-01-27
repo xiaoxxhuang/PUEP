@@ -17,11 +17,9 @@ function DisplayStats(props: Props) {
     </div>
   ));
   return (
-    <div className="puep-stats-container">
+    <div className="puep-stats-container" {...rest}>
       <h1 className="puep-title">{title}</h1>
-      <div className="puep-stats" {...rest}>
-        {stats}
-      </div>
+      <div className="puep-stats">{stats}</div>
     </div>
   );
 }

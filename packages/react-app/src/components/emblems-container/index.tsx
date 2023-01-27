@@ -19,11 +19,14 @@ function EmblemsContainer(props: Props) {
       style={{
         transform: `rotate(${option.rotateDegree}deg) translate(125px) rotate(-${option.rotateDegree}deg)`,
       }}
-    ></div>
+    >
+      <div className="puep-circle"></div>
+    </div>
   ));
   return (
     <div className="puep-emblems-container" {...rest}>
       {emblems}
+      0/10
     </div>
   );
 }

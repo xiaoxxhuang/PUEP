@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import "./index.css";
 
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,4 +15,4 @@ function Button(props: Props) {
   );
 }
 
-export default memo(Button);
+export default Button;

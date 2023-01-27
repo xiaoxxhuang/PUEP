@@ -27,10 +27,14 @@ function FilterFocus(props: Props) {
     </label>
   ));
   return (
-    <div className="puep-radiobuttongroup-container">
-      <span className="puep-label">{children}</span>
-      <div className="puep-radiobutton-div" {...rest}>
-        {radioButtons}
+    <div className="puep-radiobuttongroup-container row">
+      <div className="col-xs-10 col-sm-2 col-md-2 col-lg-2">
+        <span className="puep-label">{children}</span>
+      </div>
+      <div className="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+        <div className="puep-radiobutton-div" {...rest}>
+          {radioButtons}
+        </div>
       </div>
     </div>
   );

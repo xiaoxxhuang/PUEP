@@ -65,34 +65,48 @@ function App() {
       <header className="App-header">
         <p>Pokemon Unite Emblems Planner</p>
       </header>
-      <FilterFocus
-        options={options1}
-        value={selectedValue}
-        children="Primary Focus:"
-        onChange={handleChange}
-      />
-      <FilterFocus
-        options={options2}
-        value={selectedValue}
-        children="Secondary Focus:"
-        onChange={handleChange}
-      />
-      <div className="puep-button-container">
-        <Button children="Filter" disabled={false} />
-      </div>
-      <div className="puep-div">
-        <EmblemsContainer options={emblemsContainer} />
-        <DisplayStats
-          options={formatStats(emblemStats)}
-          title="Current Effect"
+      <div>
+        <FilterFocus
+          options={options1}
+          value={selectedValue}
+          children="Primary Focus:"
+          onChange={handleChange}
         />
-      </div>
-      <div className="puep-div">
-        <PkmsContainer options={emblemsContainer} />
-        <DisplayStats
-          options={calculatePkmStats(emblemStats, pkmStats)}
-          title="Effect on Pokemon: Venusaur"
+        <FilterFocus
+          options={options2}
+          value={selectedValue}
+          children="Secondary Focus:"
+          onChange={handleChange}
         />
+        {/* <div className="puep-button-container">
+          <Button children="Filter" disabled={false} />
+        </div> */}
+      </div>
+      <div>
+        <div className="puep-div center-xs row middle-xs around-xs">
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <EmblemsContainer options={emblemsContainer} />
+          </div>
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <DisplayStats
+              options={formatStats(emblemStats)}
+              title="Current Effect"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div className="puep-div center-xs row middle-xs around-xs">
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <PkmsContainer options={emblemsContainer} />
+          </div>
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <DisplayStats
+              options={calculatePkmStats(emblemStats, pkmStats)}
+              title="Effect on Pokemon: Venusaur"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

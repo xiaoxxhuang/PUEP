@@ -12,11 +12,11 @@
 
 .puep-stats-container {
   width: 350px;
+  margin: 40px;
 }
 
 .puep-title {
   text-align: center;
-  background-color: white;
   align-items: center;
   justify-content: center;
   display: flex;
