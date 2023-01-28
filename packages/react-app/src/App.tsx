@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import FilterFocus from "./components/filter-focus";
-import Button from "./components/button";
+// import Button from "./components/button";
 import DisplayStats from "./components/display-stats";
 import EmblemsContainer from "./components/emblems-container";
 import PkmsContainer from "./components/pkms-container";
