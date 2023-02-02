@@ -1,13 +1,12 @@
 .puep-app {
   text-align: center;
-  background-image: url("../public/images/pkm-background2.png");
+  background-image: url("./images/puep-bg1.jpeg");
   background-repeat: no-repeat, repeat;
   background-size: cover;
-  background-blend-mode: overlay;
   background-color: #cccccc;
 }
 
-.puep-app-header, .puep-app-footer {
+.puep-app-footer {
   background-color: #282c34;
   display: flex;
   font-size: large;

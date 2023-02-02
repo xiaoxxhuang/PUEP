@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import PuepHeader from "./components/puep-header";
 import FilterFocus from "./components/filter-focus";
 // import Button from "./components/button";
 import DisplayStats from "./components/display-stats";
@@ -62,9 +63,7 @@ function App() {
 
   return (
     <div className="puep-app">
-      <header className="puep-app-header">
-        <p>Pokemon Unite Emblems Planner</p>
-      </header>
+      <PuepHeader />
       <div>
         <FilterFocus
           options={options1}

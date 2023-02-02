@@ -1,0 +1,16 @@
+.puep-header {
+  background-color: #282c34;
+  display: flex;
+  font-size: large;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.puep-header-div {
+  display: flex;
+  justify-content: space-between;
+  width: -webkit-fill-available;
+  padding: 10px;
+}
