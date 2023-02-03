@@ -1,10 +1,10 @@
 import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
 import { lambdaHandler } from "./index";
 import { emblemHandler } from "./emblems/handler";
-import { pkmHandler } from "./pkms/handler";
+import { pokemonHandler } from "./pokemons/handler";
 
 jest.mock("./emblems/handler");
-jest.mock("./pkms/handler");
+jest.mock("./pokemons/handler");
 
 describe("lambdaHandler", () => {
   beforeEach(() => {
@@ -14,9 +14,9 @@ describe("lambdaHandler", () => {
     statusCode: 200,
     body: "mock emblem response",
   };
-  const dummyPkmResponse: APIGatewayProxyResult = {
+  const dummyPokemonResponse: APIGatewayProxyResult = {
     statusCode: 200,
-    body: "mock pkm response",
+    body: "mock pokemon response",
   };
 
   it("should succesfully return emblem result when calling emblemHandler", async () => {
@@ -33,18 +33,18 @@ describe("lambdaHandler", () => {
     expect(result).toStrictEqual(dummyEmblemResponse);
   });
 
-  it("should succesfully return pkm result when calling pkmHandler", async () => {
+  it("should succesfully return pokemon result when calling pokemonHandler", async () => {
     const dummyProxyEvent = {
       queryStringParameters: {
         param: "dummy_param",
       },
       pathParameters: {
-        PROXY: "pkms",
+        PROXY: "pokemons",
       },
     } as any as APIGatewayProxyEvent;
-    (pkmHandler as jest.Mock).mockResolvedValue(dummyPkmResponse);
+    (pokemonHandler as jest.Mock).mockResolvedValue(dummyPokemonResponse);
     const result = await lambdaHandler(dummyProxyEvent);
-    expect(result).toStrictEqual(dummyPkmResponse);
+    expect(result).toStrictEqual(dummyPokemonResponse);
   });
 
   it("should succesfully throw error when proxy not exist", async () => {

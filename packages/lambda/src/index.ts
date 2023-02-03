@@ -1,10 +1,10 @@
 import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
 import { emblemHandler } from "./emblems/handler";
-import { pkmHandler } from "./pkms/handler";
+import { pokemonHandler } from "./pokemons/handler";
 
 const routes: Record<string, Function> = {
   emblems: emblemHandler,
-  pkms: pkmHandler,
+  pokemons: pokemonHandler,
   error: () => new Error(`Unsupported route`),
 };
 

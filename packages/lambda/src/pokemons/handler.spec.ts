@@ -2,25 +2,25 @@ import {
   APIGatewayProxyResult,
   APIGatewayProxyEventQueryStringParameters,
 } from "aws-lambda";
-import { pkmHandler } from "./handler";
-import { getPkmStatsByName } from "./query";
-import { IDBPkm } from "./types";
+import { pokemonHandler } from "./handler";
+import { getPokemonStatsByName } from "./query";
+import { IDBPokemon } from "./types";
 
 jest.mock("./query");
 
-describe("pkmHandler", () => {
+describe("pokemonHandler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  describe("getPkmStatsByName()", () => {
-    const dummyPkmName = "venusaur";
+  describe("getPokemonStatsByName()", () => {
+    const dummyPokemonName = "venusaur";
     const dummyType = "bronze";
-    const dummyPkmParam: APIGatewayProxyEventQueryStringParameters = {
-      name: dummyPkmName,
+    const dummyPokemonParam: APIGatewayProxyEventQueryStringParameters = {
+      name: dummyPokemonName,
       type: dummyType,
     };
-    const dummyPkm: IDBPkm = {
-      pk: `name:${dummyPkmName}`,
+    const dummyPokemon: IDBPokemon = {
+      pk: `name:${dummyPokemonName}`,
       sk: `type:${dummyType}`,
       attack: 1,
       special_attack: 1,
@@ -36,18 +36,18 @@ describe("pkmHandler", () => {
       statusCode: 200,
       body: JSON.stringify({
         status: "ok",
-        data: dummyPkm,
+        data: dummyPokemon,
       }),
     };
 
-    it("should succesfully return expected result when pkm and type exist", async () => {
-      (getPkmStatsByName as jest.Mock).mockResolvedValue(dummyPkm);
-      const result = await pkmHandler(dummyPkmParam);
+    it("should succesfully return expected result when pokemon and type exist", async () => {
+      (getPokemonStatsByName as jest.Mock).mockResolvedValue(dummyPokemon);
+      const result = await pokemonHandler(dummyPokemonParam);
       expect(result).toStrictEqual(dummyResult);
     });
 
-    it("should succesfully return expected result when pkm and type not exist", async () => {
-      (getPkmStatsByName as jest.Mock).mockResolvedValue(undefined);
+    it("should succesfully return expected result when pokemon and type not exist", async () => {
+      (getPokemonStatsByName as jest.Mock).mockResolvedValue(undefined);
       const dummyInvalidDataResult = {
         ...dummyResult,
         body: JSON.stringify({
@@ -56,18 +56,18 @@ describe("pkmHandler", () => {
         }),
       };
 
-      const result = await pkmHandler(dummyPkmParam);
+      const result = await pokemonHandler(dummyPokemonParam);
 
       expect(result).toStrictEqual(dummyInvalidDataResult);
     });
 
-    it("should return not found when pkm and type not provided", async () => {
+    it("should return not found when pokemon and type not provided", async () => {
       const dummtInvalidResult: APIGatewayProxyResult = {
         statusCode: 400,
         body: "Name and Type not provided",
       };
 
-      const result = await pkmHandler(null);
+      const result = await pokemonHandler(null);
 
       expect(result).toStrictEqual(dummtInvalidResult);
     });

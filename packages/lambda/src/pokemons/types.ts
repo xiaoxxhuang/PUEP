@@ -1,4 +1,4 @@
-export interface IDBPkm {
+export interface IDBPokemon {
   pk: string;
   sk: string;
   attack: number;

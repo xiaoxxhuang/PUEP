@@ -13,7 +13,7 @@ export interface Props {
 }
 
 function FilterFocus(props: Props) {
-  const { options, value, children, onChange, ...rest } = props;
+  const { options, value, children, onChange } = props;
 
   const radioButtons = options.map((option) => (
     <label key={option.value} className="puep-radiobutton-label">
@@ -32,7 +32,7 @@ function FilterFocus(props: Props) {
         <span className="puep-label">{children}</span>
       </div>
       <div className="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-        <div className="puep-radiobutton-div" {...rest}>
+        <div className="puep-radiobutton-div">
           {radioButtons}
         </div>
       </div>

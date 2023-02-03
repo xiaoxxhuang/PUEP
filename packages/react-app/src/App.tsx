@@ -2,30 +2,31 @@ import React, { useState } from "react";
 import "./App.css";
 import PuepHeader from "./components/puep-header";
 import FilterFocus from "./components/filter-focus";
-// import Button from "./components/button";
 import DisplayStats from "./components/display-stats";
 import EmblemsContainer from "./components/emblems-container";
-import PkmsContainer from "./components/pkms-container";
-import { PkmStats, StatsDataOptions } from "./types";
+import PokemonsContainer from "./components/pokemons-container";
+import { StatsDataOptions, PokemonStat } from "./types";
 
 function App() {
   const options1 = [
     { value: "hp1", label: "HP" },
-    { value: "atk1", label: "Attack" },
-    { value: "spatk1", label: "Sp. Atk" },
-    { value: "def1", label: "Defense" },
-    { value: "ms1", label: "Movement Speed" },
-    { value: "cr1", label: "Crit. Hit Rate" },
-    { value: "cd1", label: "Cooldown Rate" },
+    { value: "attack1", label: "Attack" },
+    { value: "special_attack1", label: "Special Attack" },
+    { value: "defense1", label: "Defense" },
+    { value: "special_defense1", label: "Special Defense" },
+    { value: "movement_speed1", label: "Movement Speed" },
+    { value: "critical_rate1", label: "Critical Hit Rate" },
+    { value: "cooldown_rate1", label: "Cooldown Rate" },
   ];
   const options2 = [
     { value: "hp2", label: "HP" },
-    { value: "atk2", label: "Attack" },
-    { value: "spatk2", label: "Sp. Atk" },
-    { value: "def2", label: "Defense" },
-    { value: "ms2", label: "Movement Speed" },
-    { value: "cr2", label: "Crit. Hit Rate" },
-    { value: "cd2", label: "Cooldown Rate" },
+    { value: "attack2", label: "Attack" },
+    { value: "special_attack2", label: "Special Attack" },
+    { value: "defense2", label: "Defense" },
+    { value: "special_defense2", label: "Special Defense" },
+    { value: "movement_speed2", label: "Movement Speed" },
+    { value: "critical_rate2", label: "Critical Hit Rate" },
+    { value: "cooldown_rate2", label: "Cooldown Rate" },
   ];
   const emblemsContainer = [
     { order: 0, rotateDegree: 0 },
@@ -39,21 +40,21 @@ function App() {
     { order: 8, rotateDegree: 288 },
     { order: 9, rotateDegree: 324 },
   ];
-  const emblemStats = {
-    Attack: "+1.5",
-    "Sp. Atk": "+1.5",
-    Defense: "-4",
+  const emblemStat: PokemonStat = {
+    attack: "+1.5",
+    special_attack: "+1.5",
+    defense: "-4",
   };
-  const pkmStats: PkmStats = {
-    HP: "6580",
-    Attack: "288.2",
-    "Sp. Atk": "962",
-    "Attack Speed": "20.21%",
-    Defense: "230",
-    "Sp. Def": "174",
-    "Cooldown Rate": "25%",
-    "Crit. Hit Rate": "0%",
-    Lifesteal: "0%",
+  const pokemonStat: PokemonStat = {
+    hp: "6580",
+    attack: "288.2",
+    special_attack: "962",
+    attack_speed: "20.21%",
+    defense: "230",
+    special_defense: "174",
+    cooldown_rate: "25%",
+    critical_rate: "0%",
+    lifesteal: "0%",
   };
   const [selectedValue, setSelectedValue] = useState("");
 
@@ -77,9 +78,6 @@ function App() {
           children="Secondary Focus:"
           onChange={handleChange}
         />
-        {/* <div className="puep-button-container">
-          <Button children="Filter" disabled={false} />
-        </div> */}
       </div>
       <div>
         <div className="puep-div center-xs row middle-xs around-xs">
@@ -88,7 +86,7 @@ function App() {
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStats
-              options={formatStats(emblemStats)}
+              options={formatStatOptions(emblemStat)}
               title="Current Effect"
             />
           </div>
@@ -97,11 +95,11 @@ function App() {
       <div>
         <div className="puep-div center-xs row middle-xs around-xs">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <PkmsContainer options={emblemsContainer} />
+            <PokemonsContainer options={emblemsContainer} />
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStats
-              options={calculatePkmStats(emblemStats, pkmStats)}
+              options={calculatePokemonStat(emblemStat, pokemonStat)}
               title="Effect on Pokemon: Venusaur"
             />
           </div>
@@ -114,22 +112,25 @@ function App() {
   );
 }
 
-function calculatePkmStats(emblemStats: Partial<PkmStats>, pkmStats: PkmStats) {
-  for (const emblemStat in emblemStats) {
-    const key = emblemStat as keyof PkmStats;
-    pkmStats[key] = (
-      Number(pkmStats[key]) + Number(emblemStats[key])
+function calculatePokemonStat(
+  emblemStat: PokemonStat,
+  pokemonStat: PokemonStat
+) {
+  for (const stat in emblemStat) {
+    const key = stat as keyof PokemonStat;
+    pokemonStat[key] = (
+      Number(pokemonStat[key]) + Number(emblemStat[key])
     ).toString();
   }
-  return formatStats(pkmStats);
+  return formatStatOptions(pokemonStat);
 }
 
-function formatStats(stats: object): StatsDataOptions[] {
-  let displayStats: StatsDataOptions[] = [];
+function formatStatOptions(stats: object): StatsDataOptions[] {
+  const displayStat: StatsDataOptions[] = [];
   Object.entries(stats).forEach((stat) => {
-    displayStats.push({ stat: stat[0], value: stat[1] });
+    displayStat.push({ stat: stat[0], value: stat[1] });
   });
-  return displayStats;
+  return displayStat;
 }
 
 export default App;

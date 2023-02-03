@@ -10,7 +10,7 @@ export interface Props extends React.HTMLProps<HTMLDivElement> {
 }
 
 function EmblemsContainer(props: Props) {
-  const { options, ...rest } = props;
+  const { options } = props;
 
   const emblems = options.map((option) => (
     <div
@@ -24,7 +24,7 @@ function EmblemsContainer(props: Props) {
     </div>
   ));
   return (
-    <div className="puep-emblems-container" {...rest}>
+    <div className="puep-emblems-container">
       {emblems}
       0/10
     </div>

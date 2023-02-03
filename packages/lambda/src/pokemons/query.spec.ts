@@ -1,6 +1,6 @@
-import { getPkmStatsByName } from "./query";
+import { getPokemonStatsByName } from "./query";
 import { Utils } from "../utils";
-import { IDBPkm } from "./types";
+import { IDBPokemon } from "./types";
 
 jest.mock("aws-sdk");
 jest.mock("../utils");
@@ -10,11 +10,11 @@ describe("Dynamodb query", () => {
     jest.resetAllMocks();
     (Utils.getTableName as jest.Mock).mockResolvedValue("puep_table");
   });
-  describe("getPkmStatsByName()", () => {
-    const dummyPkmName = "venusaur";
+  describe("getPokemonStatsByName()", () => {
+    const dummyPokemonName = "venusaur";
     const dummyType = "attacker";
-    const dummyPkm: IDBPkm = {
-      pk: `name:${dummyPkmName}`,
+    const dummyPokemon: IDBPokemon = {
+      pk: `name:${dummyPokemonName}`,
       sk: `type:${dummyType}`,
       attack: 1,
       special_attack: 1,
@@ -27,28 +27,28 @@ describe("Dynamodb query", () => {
       lifesteal: 1,
     };
 
-    it("shoud successfully get pkm stats by name", async () => {
+    it("shoud successfully get pokemon stats by name", async () => {
       const mockDocumentClient = {
         get: jest.fn().mockReturnThis(),
-        promise: jest.fn().mockResolvedValue({ Item: dummyPkm }),
+        promise: jest.fn().mockResolvedValue({ Item: dummyPokemon }),
       };
       (Utils.getDocumentClient as jest.Mock).mockReturnValue(
         mockDocumentClient
       );
 
-      const result = await getPkmStatsByName(dummyPkmName, dummyType);
+      const result = await getPokemonStatsByName(dummyPokemonName, dummyType);
 
-      expect(result).toStrictEqual(dummyPkm);
+      expect(result).toStrictEqual(dummyPokemon);
       expect(mockDocumentClient.get).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         Key: {
-          pk: `name:${dummyPkmName}`,
+          pk: `name:${dummyPokemonName}`,
           sk: `type:${dummyType}`,
         },
       });
     });
 
-    it("shoud return undefined when pkm does not exist", async () => {
+    it("shoud return undefined when pokemon does not exist", async () => {
       const mockDocumentClient = {
         get: jest.fn().mockReturnThis(),
         promise: jest.fn().mockResolvedValue({}),
@@ -57,13 +57,13 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getPkmStatsByName(dummyPkmName, dummyType);
+      const result = await getPokemonStatsByName(dummyPokemonName, dummyType);
 
       expect(result).toBeUndefined();
       expect(mockDocumentClient.get).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         Key: {
-          pk: `name:${dummyPkmName}`,
+          pk: `name:${dummyPokemonName}`,
           sk: `type:${dummyType}`,
         },
       });
@@ -78,13 +78,13 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getPkmStatsByName(dummyPkmName, dummyType);
+      const result = await getPokemonStatsByName(dummyPokemonName, dummyType);
 
       expect(result).toBeUndefined();
       expect(mockDocumentClient.get).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         Key: {
-          pk: `name:${dummyPkmName}`,
+          pk: `name:${dummyPokemonName}`,
           sk: `type:${dummyType}`,
         },
       });
