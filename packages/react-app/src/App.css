@@ -22,8 +22,7 @@
 }
 
 .puep-div {
-  display: inline-flex;
-  justify-content: space-evenly;
-  align-items: center;
+  max-width: 1024px;
+  margin: 0 auto !important;
   text-align: -webkit-center;
 }

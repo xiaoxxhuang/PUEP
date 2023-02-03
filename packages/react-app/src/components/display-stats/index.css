@@ -11,7 +11,7 @@
 }
 
 .puep-stats-container {
-  width: 350px;
+  max-width: 350px;
   margin: 40px;
 }
 

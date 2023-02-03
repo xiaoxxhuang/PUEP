@@ -80,7 +80,7 @@ function App() {
         />
       </div>
       <div>
-        <div className="puep-div center-xs row middle-xs around-xs">
+        <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <EmblemsContainer options={emblemsContainer} />
           </div>
@@ -93,7 +93,7 @@ function App() {
         </div>
       </div>
       <div>
-        <div className="puep-div center-xs row middle-xs around-xs">
+        <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <PokemonsContainer options={emblemsContainer} />
           </div>
