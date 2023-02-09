@@ -6,11 +6,6 @@ describe("renders learn react link", () => {
     render(<Planner />);
   });
 
-  it("Should render the App element", () => {
-    const linkElement = screen.getByText(/Pokemon Unite Emblems Planner/i);
-    expect(linkElement).toBeInTheDocument();
-  });
-
   it("Should check a radio button when the radio button is selected", () => {
     const attackRadioButtons: HTMLInputElement[] =
       screen.getAllByLabelText("Attack");

@@ -1,13 +1,16 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import { MemoryRouter} from 'react-router-dom'
 import App from "./App";
 
-describe("renders puep app", () => {
-  beforeEach(() => {
-    render(<App />);
-  });
+describe("Render App", () => {
+  it("renders loading state while waiting for the lazily loaded components", () => {
+    const { getByText } = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>
+    );
 
-  it("Should render the App element", () => {
-    const linkElement = screen.getByText(/Pokemon Unite Emblems Planner/i);
-    expect(linkElement).toBeInTheDocument();
+    expect(getByText("Loading...")).toBeInTheDocument();
   });
 });
+
