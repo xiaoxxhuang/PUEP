@@ -15,7 +15,7 @@ function PuepHeader() {
         <nav>
           <ul>
             <li>
-              <NavLink to="/">EmblemPlanner</NavLink>
+              <NavLink to="/">Planner</NavLink>
             </li>
             <li>
               <NavLink to="/emblems">Emblems</NavLink>
