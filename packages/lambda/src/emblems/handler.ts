@@ -1,31 +1,29 @@
 import { APIGatewayProxyEventQueryStringParameters } from "aws-lambda";
-import { getEmblemByPokemonAndType } from "./query";
+import { getEmblemById } from "./query";
 import { IDBEmblem } from "./types";
 
 export async function emblemHandler(
   emblemParam: APIGatewayProxyEventQueryStringParameters | null
 ) {
   const pokemon = emblemParam?.pokemon;
-  const type = emblemParam?.type;
-  if (pokemon && type) {
+  if (pokemon) {
     return {
       statusCode: 200,
       body: JSON.stringify({
         status: "ok",
-        data: await getEmblemData(pokemon, type),
+        data: await getEmblemData(pokemon),
       }),
     };
   }
   return {
     statusCode: 400,
-    body: "Pokemon and Type not provided",
+    body: "Emblem id not provided",
   };
 }
 
 async function getEmblemData(
   pokemon: string,
-  type: string
 ): Promise<IDBEmblem | {}> {
-  const emblem = await getEmblemByPokemonAndType(pokemon, type);
+  const emblem = await getEmblemById(pokemon);
   return emblem ? emblem : {};
 }

@@ -3,7 +3,7 @@ import {
   APIGatewayProxyEventQueryStringParameters,
 } from "aws-lambda";
 import { emblemHandler } from "./handler";
-import { getEmblemByPokemonAndType } from "./query";
+import { getEmblemById } from "./query";
 import { IDBEmblem } from "./types";
 
 jest.mock("./query");
@@ -12,7 +12,7 @@ describe("emblemHandler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  describe("getEmblemByPokemonAndType()", () => {
+  describe("getEmblemById()", () => {
     const dummyPokemon = "venusaur";
     const dummyType = "bronze";
     const dummyEmblemParam: APIGatewayProxyEventQueryStringParameters = {
@@ -21,10 +21,10 @@ describe("emblemHandler", () => {
     };
     const dummyEmblem: IDBEmblem = {
       pk: `pokemon:${dummyPokemon}`,
-      sk: `type:${dummyType}`,
-      color: ["green"],
-      attack: -1.2,
-      special_attack: 1.8,
+      color: "green",
+      attack: "-1.2",
+      special_attack: "1.8",
+      url: "https://example.com",
     };
     const dummyResult: APIGatewayProxyResult = {
       statusCode: 200,
@@ -35,13 +35,13 @@ describe("emblemHandler", () => {
     };
 
     it("should succesfully return expected result when pokemon and type exist", async () => {
-      (getEmblemByPokemonAndType as jest.Mock).mockResolvedValue(dummyEmblem);
+      (getEmblemById as jest.Mock).mockResolvedValue(dummyEmblem);
       const result = await emblemHandler(dummyEmblemParam);
       expect(result).toStrictEqual(dummyResult);
     });
 
     it("should succesfully return expected result when pokemon and type not exist", async () => {
-      (getEmblemByPokemonAndType as jest.Mock).mockResolvedValue(undefined);
+      (getEmblemById as jest.Mock).mockResolvedValue(undefined);
       const dummyInvalidDataResult = {
         ...dummyResult,
         body: JSON.stringify({
@@ -58,7 +58,7 @@ describe("emblemHandler", () => {
     it("should return not found when pokemon and type not provided", async () => {
       const dummtInvalidResult: APIGatewayProxyResult = {
         statusCode: 400,
-        body: "Pokemon and Type not provided",
+        body: "Emblem id not provided",
       };
 
       const result = await emblemHandler(null);

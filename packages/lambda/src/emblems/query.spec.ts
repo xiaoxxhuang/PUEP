@@ -1,4 +1,4 @@
-import { getEmblemByPokemonAndType } from "./query";
+import { getEmblemById } from "./query";
 import { Utils } from "../utils";
 import { IDBEmblem } from "./types";
 
@@ -10,18 +10,17 @@ describe("Dynamodb query", () => {
     jest.resetAllMocks();
     (Utils.getTableName as jest.Mock).mockResolvedValue("puep_table");
   });
-  describe("getEmblemByPokemonAndType()", () => {
+  describe("getEmblemById()", () => {
     const dummyPokemon = "venusaur";
-    const dummyType = "bronze";
     const dummyEmblem: IDBEmblem = {
       pk: `pokemon:${dummyPokemon}`,
-      sk: `type:${dummyType}`,
-      color: ["green"],
-      attack: -1.2,
-      special_attack: 1.8,
+      color: "green",
+      attack: "-1.2",
+      special_attack: "1.8",
+      url: "https//example.com",
     };
 
-    it("shoud successfully get emblem by pokemon and type", async () => {
+    it("shoud successfully get emblem by id", async () => {
       const mockDocumentClient = {
         get: jest.fn().mockReturnThis(),
         promise: jest.fn().mockResolvedValue({ Item: dummyEmblem }),
@@ -30,14 +29,13 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getEmblemByPokemonAndType(dummyPokemon, dummyType);
+      const result = await getEmblemById(dummyPokemon);
 
       expect(result).toStrictEqual(dummyEmblem);
       expect(mockDocumentClient.get).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         Key: {
-          pk: `pokemon:${dummyPokemon}`,
-          sk: `type:${dummyType}`,
+          pk: `emblem:${dummyPokemon}`,
         },
       });
     });
@@ -51,37 +49,35 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getEmblemByPokemonAndType(dummyPokemon, dummyType);
+      const result = await getEmblemById(dummyPokemon);
 
       expect(result).toBeUndefined();
       expect(mockDocumentClient.get).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         Key: {
-          pk: `pokemon:${dummyPokemon}`,
-          sk: `type:${dummyType}`,
+          pk: `emblem:${dummyPokemon}`,
         },
       });
     });
 
     it("shoud return undefined when result is undefined", async () => {
-        const mockDocumentClient = {
-          get: jest.fn().mockReturnThis(),
-          promise: jest.fn().mockResolvedValue(undefined),
-        };
-        (Utils.getDocumentClient as jest.Mock).mockReturnValue(
-          mockDocumentClient
-        );
-  
-        const result = await getEmblemByPokemonAndType(dummyPokemon, dummyType);
-  
-        expect(result).toBeUndefined();
-        expect(mockDocumentClient.get).toHaveBeenCalledWith({
-          TableName: Utils.getTableName(),
-          Key: {
-            pk: `pokemon:${dummyPokemon}`,
-            sk: `type:${dummyType}`,
-          },
-        });
+      const mockDocumentClient = {
+        get: jest.fn().mockReturnThis(),
+        promise: jest.fn().mockResolvedValue(undefined),
+      };
+      (Utils.getDocumentClient as jest.Mock).mockReturnValue(
+        mockDocumentClient
+      );
+
+      const result = await getEmblemById(dummyPokemon);
+
+      expect(result).toBeUndefined();
+      expect(mockDocumentClient.get).toHaveBeenCalledWith({
+        TableName: Utils.getTableName(),
+        Key: {
+          pk: `emblem:${dummyPokemon}`,
+        },
       });
+    });
   });
 });

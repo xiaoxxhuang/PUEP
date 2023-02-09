@@ -1,14 +1,14 @@
 export interface IDBEmblem {
     pk: string;
-    sk: string;
-    color: string[];
-    attack?: number;
-    cooldown?: number;
-    critical_rate?: number;
-    defense?: number;
-    hp?: number;
-    movement_speed?: number;
-    special_attack?: number;
-    special_defense?: number;
+    color: string;
+    attack?: string;
+    cooldown?: string;
+    critical_rate?: string;
+    defense?: string;
+    hp?: string;
+    movement_speed?: string;
+    special_attack?: string;
+    special_defense?: string;
+    url: string;
   }
   
