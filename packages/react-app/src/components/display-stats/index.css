@@ -1,21 +1,21 @@
-.puep-stat {
+.display-stat {
   align-items: center;
   justify-content: space-between;
   display: flex;
 }
 
-.puep-stats {
+.display-stats {
   display: block;
   position: relative;
   padding: 20px;
 }
 
-.puep-stats-container {
+.display-stats-container {
   max-width: 350px;
   margin: 40px;
 }
 
-.puep-title {
+.display-title {
   text-align: center;
   align-items: center;
   justify-content: center;
