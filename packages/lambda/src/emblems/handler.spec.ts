@@ -13,14 +13,12 @@ describe("emblemHandler", () => {
     jest.clearAllMocks();
   });
   describe("getEmblemById()", () => {
-    const dummyPokemon = "venusaur";
-    const dummyType = "bronze";
+    const dummyEmblemId = "001A";
     const dummyEmblemParam: APIGatewayProxyEventQueryStringParameters = {
-      pokemon: dummyPokemon,
-      type: dummyType,
+      emblem: dummyEmblemId,
     };
     const dummyEmblem: IDBEmblem = {
-      pk: `pokemon:${dummyPokemon}`,
+      pk: `emblem:${dummyEmblemId}`,
       color: "green",
       attack: "-1.2",
       special_attack: "1.8",
@@ -34,7 +32,7 @@ describe("emblemHandler", () => {
       }),
     };
 
-    it("should succesfully return expected result when pokemon and type exist", async () => {
+    it("should succesfully return expected result when emblemId exist", async () => {
       (getEmblemById as jest.Mock).mockResolvedValue(dummyEmblem);
       const result = await emblemHandler(dummyEmblemParam);
       expect(result).toStrictEqual(dummyResult);
