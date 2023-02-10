@@ -68,9 +68,13 @@ resource "aws_iam_policy" "lambda_policy" {
     Statement = [
       {
         Action = [
-          "dynamodb:DeleteItem",
+          "dynamodb:BatchGetItem",
           "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+          "dynamodb:BatchWriteItem",
           "dynamodb:PutItem",
+          "dynamodb:UpdateItem"
         ]
         Effect   = "Allow"
         Resource = "*"
