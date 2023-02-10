@@ -1,4 +1,4 @@
-import { getEmblemById } from "./query";
+import { getEmblemById, getEmblemsByPrimaryFocus } from "./query";
 import { Utils } from "../utils";
 import { IDBEmblem } from "./types";
 
@@ -13,7 +13,7 @@ describe("Dynamodb query", () => {
   describe("getEmblemById()", () => {
     const dummyPokemon = "venusaur";
     const dummyEmblem: IDBEmblem = {
-      pk: `pokemon:${dummyPokemon}`,
+      pk: `emblem:${dummyPokemon}`,
       color: "green",
       attack: "-1.2",
       special_attack: "1.8",
@@ -76,6 +76,100 @@ describe("Dynamodb query", () => {
         TableName: Utils.getTableName(),
         Key: {
           pk: `emblem:${dummyPokemon}`,
+        },
+      });
+    });
+  });
+
+  describe("getEmblemsByPrimaryFocus()", () => {
+    const dummyPrimaryFocus = "hp";
+    const dummyEmblems: IDBEmblem[] = [
+      {
+        pk: `emblem:`,
+        color: "green",
+        hp: "30",
+        attack: "-1.2",
+        url: "https//example.com",
+      },
+    ];
+
+    it("shoud successfully get emblems by primary focus", async () => {
+      const mockDocumentClient = {
+        scan: jest.fn().mockReturnThis(),
+        promise: jest.fn().mockResolvedValue({ Items: dummyEmblems }),
+      };
+      (Utils.getDocumentClient as jest.Mock).mockReturnValue(
+        mockDocumentClient
+      );
+
+      const result = await getEmblemsByPrimaryFocus(dummyPrimaryFocus);
+
+      expect(result).toStrictEqual(dummyEmblems);
+      expect(mockDocumentClient.scan).toHaveBeenCalledWith({
+        TableName: Utils.getTableName(),
+        FilterExpression:
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+        ExpressionAttributeNames: {
+          "#pk": "pk",
+          "#focus": `${dummyPrimaryFocus}`,
+        },
+        ExpressionAttributeValues: {
+          ":prefix": "emblem:",
+          ":minus": "-",
+        },
+      });
+    });
+
+    it("shoud return undefined when emblem does not exist", async () => {
+      const mockDocumentClient = {
+        scan: jest.fn().mockReturnThis(),
+        promise: jest.fn().mockResolvedValue({}),
+      };
+      (Utils.getDocumentClient as jest.Mock).mockReturnValue(
+        mockDocumentClient
+      );
+
+      const result = await getEmblemsByPrimaryFocus(dummyPrimaryFocus);
+
+      expect(result).toBeUndefined();
+      expect(mockDocumentClient.scan).toHaveBeenCalledWith({
+        TableName: Utils.getTableName(),
+        FilterExpression:
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+        ExpressionAttributeNames: {
+          "#pk": "pk",
+          "#focus": `${dummyPrimaryFocus}`,
+        },
+        ExpressionAttributeValues: {
+          ":prefix": "emblem:",
+          ":minus": "-",
+        },
+      });
+    });
+
+    it("shoud return undefined when result is undefined", async () => {
+      const mockDocumentClient = {
+        scan: jest.fn().mockReturnThis(),
+        promise: jest.fn().mockResolvedValue(undefined),
+      };
+      (Utils.getDocumentClient as jest.Mock).mockReturnValue(
+        mockDocumentClient
+      );
+
+      const result = await getEmblemsByPrimaryFocus(dummyPrimaryFocus);
+
+      expect(result).toBeUndefined();
+      expect(mockDocumentClient.scan).toHaveBeenCalledWith({
+        TableName: Utils.getTableName(),
+        FilterExpression:
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+        ExpressionAttributeNames: {
+          "#pk": "pk",
+          "#focus": `${dummyPrimaryFocus}`,
+        },
+        ExpressionAttributeValues: {
+          ":prefix": "emblem:",
+          ":minus": "-",
         },
       });
     });

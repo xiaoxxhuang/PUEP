@@ -39,7 +39,5 @@ export async function getEmblemsByPrimaryFocus(
   const results = await Utils.getDocumentClient().scan(params).promise();
   if (results?.Items && results.Items.length > 0) {
     return results.Items as IDBEmblem[];
-  } else {
-    return [];
   }
 }

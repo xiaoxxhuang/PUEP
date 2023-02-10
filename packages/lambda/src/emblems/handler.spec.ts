@@ -3,7 +3,7 @@ import {
   APIGatewayProxyEventQueryStringParameters,
 } from "aws-lambda";
 import { emblemHandler } from "./handler";
-import { getEmblemById } from "./query";
+import { getEmblemById, getEmblemsByPrimaryFocus } from "./query";
 import { IDBEmblem } from "./types";
 
 jest.mock("./query");
@@ -56,7 +56,62 @@ describe("emblemHandler", () => {
     it("should return not found when pokemon and type not provided", async () => {
       const dummtInvalidResult: APIGatewayProxyResult = {
         statusCode: 400,
-        body: "Emblem id not provided",
+        body: "Emblem not found",
+      };
+
+      const result = await emblemHandler(null);
+
+      expect(result).toStrictEqual(dummtInvalidResult);
+    });
+  });
+
+  describe("getEmblemByPrimaryFocus()", () => {
+    const dummyPrimaryFocus = "hp";
+    const dummyEmblemParam: APIGatewayProxyEventQueryStringParameters = {
+      primaryFocus: dummyPrimaryFocus,
+    };
+    const dummyEmblems: IDBEmblem[] = [
+      {
+        pk: `emblem:`,
+        color: "green",
+        hp: "30",
+        attack: "-1.2",
+        url: "https//example.com",
+      },
+    ];
+    const dummyResult: APIGatewayProxyResult = {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: "ok",
+        data: dummyEmblems,
+      }),
+    };
+
+    it("should succesfully return expected result when emblemId exist", async () => {
+      (getEmblemsByPrimaryFocus as jest.Mock).mockResolvedValue(dummyEmblems);
+      const result = await emblemHandler(dummyEmblemParam);
+      expect(result).toStrictEqual(dummyResult);
+    });
+
+    it("should succesfully return expected result when pokemon and type not exist", async () => {
+      (getEmblemsByPrimaryFocus as jest.Mock).mockResolvedValue(undefined);
+      const dummyInvalidDataResult = {
+        ...dummyResult,
+        body: JSON.stringify({
+          status: "ok",
+          data: {},
+        }),
+      };
+
+      const result = await emblemHandler(dummyEmblemParam);
+
+      expect(result).toStrictEqual(dummyInvalidDataResult);
+    });
+
+    it("should return not found when pokemon and type not provided", async () => {
+      const dummtInvalidResult: APIGatewayProxyResult = {
+        statusCode: 400,
+        body: "Emblem not found",
       };
 
       const result = await emblemHandler(null);

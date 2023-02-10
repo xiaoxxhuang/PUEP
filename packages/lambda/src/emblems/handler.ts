@@ -6,7 +6,7 @@ export async function emblemHandler(
   emblemParam: APIGatewayProxyEventQueryStringParameters | null
 ) {
   const emblemId = emblemParam?.emblem;
-  const primaryFocus = emblemParam?.focus;
+  const primaryFocus = emblemParam?.primaryFocus;
   if (emblemId) {
     return {
       statusCode: 200,
@@ -26,7 +26,7 @@ export async function emblemHandler(
   }
   return {
     statusCode: 400,
-    body: "Emblem id not provided",
+    body: "Emblem not found",
   };
 }
 
