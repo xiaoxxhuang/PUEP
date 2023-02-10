@@ -24,20 +24,20 @@ export async function getEmblemsByPrimaryFocus(
 ): Promise<IDBEmblem[] | undefined> {
   const params: DynamoDB.DocumentClient.QueryInput = {
     TableName: Utils.getTableName(),
-    KeyConditionExpression: `begins_with(#pk, :prefix)`,
-    FilterExpression: "attribute_exists(#focus)",
+    FilterExpression:
+      "begins_with(#pk, :prefix) and attribute_exists(#focus) and not contains(#focus, :minus)",
     ExpressionAttributeNames: {
       "#pk": "pk",
       "#focus": `${primaryFocus}`,
     },
     ExpressionAttributeValues: {
       ":prefix": "emblem:",
+      ":minus": "-",
     },
-    ScanIndexForward: false,
-    Limit: 10
+    Limit: 10,
   };
 
-  const results = await Utils.getDocumentClient().query(params).promise();
+  const results = await Utils.getDocumentClient().scan(params).promise();
   if (results?.Items && results.Items.length > 0) {
     return results.Items as IDBEmblem[];
   } else {
