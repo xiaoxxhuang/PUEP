@@ -1,0 +1,23 @@
+.puep-radiobuttongroup-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.puep-radiobutton-div {
+  padding: 10px;
+}
+
+.puep-radiobutton-label {
+  padding: 5px;
+}
+
+.puep-label {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: inline;
+  color: black;
+  border: none;
+  font-weight: 600;
+}

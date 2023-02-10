@@ -1,0 +1,18 @@
+.puep-pokemons-container {
+  display: inline-block;
+  background-color: white;
+  justify-content: space-evenly;
+  width: 350px;
+  height: 350px;
+  margin: 40px;
+  overflow-y: auto;
+}
+
+.puep-pokemon {
+  padding: 5px;
+  margin: 5px;
+  display: inline-block;
+  min-width: 80px;
+  height: 128px;
+  background-color: #e0e0e0;
+}

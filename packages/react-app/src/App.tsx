@@ -1,35 +1,61 @@
-import React, { memo, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import Label from "./components/label";
-import RadioButtonGroup from "./components/radio-button";
-import Button from "./components/button";
-import Stats from "./components/stats";
-import Title from "./components/title";
+import PuepHeader from "./components/puep-header";
+import FilterFocus from "./components/filter-focus";
+import DisplayStats from "./components/display-stats";
+import EmblemsContainer from "./components/emblems-container";
+import PokemonsContainer from "./components/pokemons-container";
+import { StatsDataOptions, PokemonStat } from "./types";
 
 function App() {
   const options1 = [
     { value: "hp1", label: "HP" },
-    { value: "atk1", label: "Attack" },
-    { value: "spatk1", label: "Sp. Atk" },
-    { value: "def1", label: "Defense" },
-    { value: "ms1", label: "Movement Speed" },
-    { value: "cr1", label: "Crit. Hit Rate" },
-    { value: "cd1", label: "Cooldown" },
+    { value: "attack1", label: "Attack" },
+    { value: "special_attack1", label: "Special Attack" },
+    { value: "defense1", label: "Defense" },
+    { value: "special_defense1", label: "Special Defense" },
+    { value: "movement_speed1", label: "Movement Speed" },
+    { value: "critical_rate1", label: "Critical Hit Rate" },
+    { value: "cooldown_rate1", label: "Cooldown Rate" },
   ];
   const options2 = [
     { value: "hp2", label: "HP" },
-    { value: "atk2", label: "Attack" },
-    { value: "spatk2", label: "Sp. Atk" },
-    { value: "def2", label: "Defense" },
-    { value: "ms2", label: "Movement Speed" },
-    { value: "cr2", label: "Crit. Hit Rate" },
-    { value: "cd2", label: "Cooldown" },
+    { value: "attack2", label: "Attack" },
+    { value: "special_attack2", label: "Special Attack" },
+    { value: "defense2", label: "Defense" },
+    { value: "special_defense2", label: "Special Defense" },
+    { value: "movement_speed2", label: "Movement Speed" },
+    { value: "critical_rate2", label: "Critical Hit Rate" },
+    { value: "cooldown_rate2", label: "Cooldown Rate" },
   ];
-  const displayEmblemStats = [
-    { stat: "Attack", value: "+1.5" },
-    { stat: "Sp. Atk", value: "+1.5" },
-    { stat: "Defense", value: "-4" },
-  ]
+  const emblemsContainer = [
+    { order: 0, rotateDegree: 0 },
+    { order: 1, rotateDegree: 36 },
+    { order: 2, rotateDegree: 72 },
+    { order: 3, rotateDegree: 108 },
+    { order: 4, rotateDegree: 144 },
+    { order: 5, rotateDegree: 180 },
+    { order: 6, rotateDegree: 216 },
+    { order: 7, rotateDegree: 252 },
+    { order: 8, rotateDegree: 288 },
+    { order: 9, rotateDegree: 324 },
+  ];
+  const emblemStat: PokemonStat = {
+    attack: "+1.5",
+    special_attack: "+1.5",
+    defense: "-4",
+  };
+  const pokemonStat: PokemonStat = {
+    hp: "6580",
+    attack: "288.2",
+    special_attack: "962",
+    attack_speed: "20.21%",
+    defense: "230",
+    special_defense: "174",
+    cooldown_rate: "25%",
+    critical_rate: "0%",
+    lifesteal: "0%",
+  };
   const [selectedValue, setSelectedValue] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,36 +63,74 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Example of static website using react</p>
-        <p>Learn React</p>
-      </header>
-      <div className="puep-button-container">
-        <Button children="Filter" disabled={false} />
-      </div>
-      <div className="puep-radiobuttongroup-container">
-        <Label children="Primary Focus:" />
-        <RadioButtonGroup
+    <div className="puep-app">
+      <PuepHeader />
+      <div>
+        <FilterFocus
           options={options1}
           value={selectedValue}
+          children="Primary Focus:"
           onChange={handleChange}
         />
-      </div>
-      <div className="puep-radiobuttongroup-container">
-        <Label children="Secondary Focus:" />
-        <RadioButtonGroup
+        <FilterFocus
           options={options2}
           value={selectedValue}
+          children="Secondary Focus:"
           onChange={handleChange}
         />
       </div>
       <div>
-        <Title children="Current Effect"/>
-        <Stats options={displayEmblemStats}/>
+        <div className="row middle-xs around-xs puep-div">
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <EmblemsContainer options={emblemsContainer} />
+          </div>
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <DisplayStats
+              options={formatStatOptions(emblemStat)}
+              title="Current Effect"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div className="row middle-xs around-xs puep-div">
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <PokemonsContainer options={emblemsContainer} />
+          </div>
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <DisplayStats
+              options={calculatePokemonStat(emblemStat, pokemonStat)}
+              title="Effect on Pokemon: Venusaur"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="puep-app-footer">
+        <p></p>
       </div>
     </div>
   );
 }
 
-export default memo(App);
+function calculatePokemonStat(
+  emblemStat: PokemonStat,
+  pokemonStat: PokemonStat
+) {
+  for (const stat in emblemStat) {
+    const key = stat as keyof PokemonStat;
+    pokemonStat[key] = (
+      Number(pokemonStat[key]) + Number(emblemStat[key])
+    ).toString();
+  }
+  return formatStatOptions(pokemonStat);
+}
+
+function formatStatOptions(stats: object): StatsDataOptions[] {
+  const displayStat: StatsDataOptions[] = [];
+  Object.entries(stats).forEach((stat) => {
+    displayStat.push({ stat: stat[0], value: stat[1] });
+  });
+  return displayStat;
+}
+
+export default App;

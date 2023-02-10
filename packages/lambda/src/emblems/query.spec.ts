@@ -1,4 +1,4 @@
-import { getEmblemByPkmAndType } from "./query";
+import { getEmblemByPokemonAndType } from "./query";
 import { Utils } from "../utils";
 import { IDBEmblem } from "./types";
 
@@ -10,18 +10,18 @@ describe("Dynamodb query", () => {
     jest.resetAllMocks();
     (Utils.getTableName as jest.Mock).mockResolvedValue("puep_table");
   });
-  describe("getEmblemByPkmAndType()", () => {
-    const dummyPkm = "venusaur";
+  describe("getEmblemByPokemonAndType()", () => {
+    const dummyPokemon = "venusaur";
     const dummyType = "bronze";
     const dummyEmblem: IDBEmblem = {
-      pk: `pkm:${dummyPkm}`,
+      pk: `pokemon:${dummyPokemon}`,
       sk: `type:${dummyType}`,
       color: ["green"],
       attack: -1.2,
       special_attack: 1.8,
     };
 
-    it("shoud successfully get emblem by pkm and type", async () => {
+    it("shoud successfully get emblem by pokemon and type", async () => {
       const mockDocumentClient = {
         get: jest.fn().mockReturnThis(),
         promise: jest.fn().mockResolvedValue({ Item: dummyEmblem }),
@@ -30,13 +30,13 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getEmblemByPkmAndType(dummyPkm, dummyType);
+      const result = await getEmblemByPokemonAndType(dummyPokemon, dummyType);
 
       expect(result).toStrictEqual(dummyEmblem);
       expect(mockDocumentClient.get).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         Key: {
-          pk: `pkm:${dummyPkm}`,
+          pk: `pokemon:${dummyPokemon}`,
           sk: `type:${dummyType}`,
         },
       });
@@ -51,13 +51,13 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getEmblemByPkmAndType(dummyPkm, dummyType);
+      const result = await getEmblemByPokemonAndType(dummyPokemon, dummyType);
 
       expect(result).toBeUndefined();
       expect(mockDocumentClient.get).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         Key: {
-          pk: `pkm:${dummyPkm}`,
+          pk: `pokemon:${dummyPokemon}`,
           sk: `type:${dummyType}`,
         },
       });
@@ -72,13 +72,13 @@ describe("Dynamodb query", () => {
           mockDocumentClient
         );
   
-        const result = await getEmblemByPkmAndType(dummyPkm, dummyType);
+        const result = await getEmblemByPokemonAndType(dummyPokemon, dummyType);
   
         expect(result).toBeUndefined();
         expect(mockDocumentClient.get).toHaveBeenCalledWith({
           TableName: Utils.getTableName(),
           Key: {
-            pk: `pkm:${dummyPkm}`,
+            pk: `pokemon:${dummyPokemon}`,
             sk: `type:${dummyType}`,
           },
         });
