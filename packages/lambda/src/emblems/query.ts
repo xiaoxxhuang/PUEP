@@ -25,7 +25,7 @@ export async function getEmblemsByPrimaryFocus(
   const params: DynamoDB.DocumentClient.QueryInput = {
     TableName: Utils.getTableName(),
     FilterExpression:
-      "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+      "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus) AND equals(emblem_type, bronze)",
     ExpressionAttributeNames: {
       "#pk": "pk",
       "#focus": `${primaryFocus}`,
