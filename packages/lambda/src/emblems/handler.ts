@@ -12,7 +12,7 @@ export async function emblemHandler(
       statusCode: 200,
       body: JSON.stringify({
         status: "ok",
-        data: await getEmblemData(emblemId),
+        data: await getEmblemDataById(emblemId),
       }),
     };
   } else if (primaryFocus) {
@@ -20,7 +20,7 @@ export async function emblemHandler(
       statusCode: 200,
       body: JSON.stringify({
         status: "ok",
-        data: await getEmblemDataByFocus(primaryFocus),
+        data: await getEmblemsDataByPrimaryFocus(primaryFocus),
       }),
     };
   }
@@ -30,15 +30,13 @@ export async function emblemHandler(
   };
 }
 
-async function getEmblemData(
-  emblemId: string,
-): Promise<IDBEmblem | {}> {
+async function getEmblemDataById(emblemId: string): Promise<IDBEmblem | {}> {
   const emblem = await getEmblemById(emblemId);
   return emblem ? emblem : {};
 }
 
-async function getEmblemDataByFocus(
-  primaryFocus: string,
+async function getEmblemsDataByPrimaryFocus(
+  primaryFocus: string
 ): Promise<IDBEmblem | {}> {
   const emblem = await getEmblemsByPrimaryFocus(primaryFocus);
   return emblem ? emblem : {};

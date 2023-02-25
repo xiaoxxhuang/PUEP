@@ -20,8 +20,8 @@ describe("emblemHandler", () => {
     const dummyEmblem: IDBEmblem = {
       pk: `emblem:${dummyEmblemId}`,
       color: "green",
-      attack: "-1.2",
-      special_attack: "1.8",
+      attack: -1.2,
+      special_attack: 1.8,
       url: "https://example.com",
     };
     const dummyResult: APIGatewayProxyResult = {
@@ -74,8 +74,8 @@ describe("emblemHandler", () => {
       {
         pk: `emblem:`,
         color: "green",
-        hp: "30",
-        attack: "-1.2",
+        hp: 30,
+        attack: -1.2,
         url: "https//example.com",
       },
     ];

@@ -15,8 +15,8 @@ describe("Dynamodb query", () => {
     const dummyEmblem: IDBEmblem = {
       pk: `emblem:${dummyPokemon}`,
       color: "green",
-      attack: "-1.2",
-      special_attack: "1.8",
+      attack: -1.2,
+      special_attack: 1.8,
       url: "https//example.com",
     };
 
@@ -87,8 +87,8 @@ describe("Dynamodb query", () => {
       {
         pk: `emblem:`,
         color: "green",
-        hp: "30",
-        attack: "-1.2",
+        hp: 30,
+        attack: -1.2,
         url: "https//example.com",
       },
     ];
@@ -108,14 +108,15 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
-          ":minus": "-",
+          ":focus": 0,
+          ":type": "gold",
         },
       });
     });
@@ -135,14 +136,15 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
-          ":minus": "-",
+          ":focus": 0,
+          ":type": "gold",
         },
       });
     });
@@ -162,14 +164,15 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
-          ":minus": "-",
+          ":focus": 0,
+          ":type": "gold",
         },
       });
     });

@@ -22,17 +22,18 @@ export async function getEmblemById(
 export async function getEmblemsByPrimaryFocus(
   primaryFocus: string
 ): Promise<IDBEmblem[] | undefined> {
-  const params: DynamoDB.DocumentClient.QueryInput = {
+  const params: DynamoDB.DocumentClient.ScanInput = {
     TableName: Utils.getTableName(),
     FilterExpression:
-      "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND not contains(#focus, :minus)",
+      "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
     ExpressionAttributeNames: {
       "#pk": "pk",
       "#focus": `${primaryFocus}`,
     },
     ExpressionAttributeValues: {
       ":prefix": "emblem:",
-      ":minus": "-",
+      ":focus": 0,
+      ":type": "gold",
     },
   };
 
