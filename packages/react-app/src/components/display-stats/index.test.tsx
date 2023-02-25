@@ -9,13 +9,13 @@ describe("Render DisplayStats", () => {
 
   it("Should renders the correct number of stats", () => {
     const { container } = render(<DisplayStats options={options} title="" />);
-    expect(container.getElementsByClassName("puep-stat")).toHaveLength(2);
+    expect(container.getElementsByClassName("display-stat")).toHaveLength(2);
   });
 
   it("Should display title with text `Effect`", () => {
     render(<DisplayStats options={options} title="Effect" />);
     const titleElement = screen.getByRole("heading", { level: 1 });
-    expect(titleElement).toHaveClass("puep-title");
+    expect(titleElement).toHaveClass("display-title");
     expect(titleElement).toHaveTextContent("Effect");
   });
 });

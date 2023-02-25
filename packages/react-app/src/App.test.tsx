@@ -1,21 +1,16 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import { MemoryRouter} from 'react-router-dom'
 import App from "./App";
 
-describe("renders learn react link", () => {
-  beforeEach(() => {
-    render(<App />);
-  });
+describe("Render App", () => {
+  it("renders loading state while waiting for the lazily loaded components", () => {
+    const { getByText } = render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>
+    );
 
-  it("Should render the App element", () => {
-    const linkElement = screen.getByText(/Pokemon Unite Emblems Planner/i);
-    expect(linkElement).toBeInTheDocument();
-  });
-
-  it("Should check a radio button when the radio button is selected", () => {
-    const attackRadioButtons: HTMLInputElement[] =
-      screen.getAllByLabelText("Attack");
-    expect(attackRadioButtons[0]).not.toBeChecked();
-    fireEvent.click(attackRadioButtons[0]);
-    expect(attackRadioButtons[0]).toBeChecked();
+    expect(getByText("Loading...")).toBeInTheDocument();
   });
 });
+

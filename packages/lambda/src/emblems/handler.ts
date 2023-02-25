@@ -1,31 +1,45 @@
 import { APIGatewayProxyEventQueryStringParameters } from "aws-lambda";
-import { getEmblemByPokemonAndType } from "./query";
+import { getEmblemById, getEmblemsByPrimaryFocus } from "./query";
 import { IDBEmblem } from "./types";
 
 export async function emblemHandler(
   emblemParam: APIGatewayProxyEventQueryStringParameters | null
 ) {
-  const pokemon = emblemParam?.pokemon;
-  const type = emblemParam?.type;
-  if (pokemon && type) {
+  const emblemId = emblemParam?.emblem;
+  const primaryFocus = emblemParam?.primaryFocus;
+  if (emblemId) {
     return {
       statusCode: 200,
       body: JSON.stringify({
         status: "ok",
-        data: await getEmblemData(pokemon, type),
+        data: await getEmblemData(emblemId),
+      }),
+    };
+  } else if (primaryFocus) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: "ok",
+        data: await getEmblemDataByFocus(primaryFocus),
       }),
     };
   }
   return {
     statusCode: 400,
-    body: "Pokemon and Type not provided",
+    body: "Emblem not found",
   };
 }
 
 async function getEmblemData(
-  pokemon: string,
-  type: string
+  emblemId: string,
 ): Promise<IDBEmblem | {}> {
-  const emblem = await getEmblemByPokemonAndType(pokemon, type);
+  const emblem = await getEmblemById(emblemId);
+  return emblem ? emblem : {};
+}
+
+async function getEmblemDataByFocus(
+  primaryFocus: string,
+): Promise<IDBEmblem | {}> {
+  const emblem = await getEmblemsByPrimaryFocus(primaryFocus);
   return emblem ? emblem : {};
 }
