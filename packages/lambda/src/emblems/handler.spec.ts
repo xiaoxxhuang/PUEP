@@ -15,7 +15,7 @@ describe("emblemHandler", () => {
   describe("getEmblemById()", () => {
     const dummyEmblemId = "001A";
     const dummyEmblemParam: APIGatewayProxyEventQueryStringParameters = {
-      emblem: dummyEmblemId,
+      id: dummyEmblemId,
     };
     const dummyEmblem: IDBEmblem = {
       pk: `emblem:${dummyEmblemId}`,

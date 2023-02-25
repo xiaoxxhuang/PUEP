@@ -5,7 +5,7 @@ import { IDBEmblem } from "./types";
 export async function emblemHandler(
   emblemParam: APIGatewayProxyEventQueryStringParameters | null
 ) {
-  const emblemId = emblemParam?.emblem;
+  const emblemId = emblemParam?.id;
   const primaryFocus = emblemParam?.primaryFocus;
   if (emblemId) {
     return {

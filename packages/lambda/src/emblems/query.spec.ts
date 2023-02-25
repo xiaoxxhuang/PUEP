@@ -108,10 +108,11 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND #type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
+          "#type": "type",
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
@@ -136,10 +137,11 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND #type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
+          "#type": "type",
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
@@ -164,10 +166,11 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
+          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND #type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
+          "#type": "type",
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
