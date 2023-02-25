@@ -62,7 +62,7 @@ resource "aws_cloudfront_origin_access_control" "images_bucket_access" {
   signing_protocol                  = "sigv4"
 }
 
-resource "aws_cloudfront_distribution" "frontend" {
+resource "aws_cloudfront_distribution" "images_bucket" {
   origin {
     domain_name = aws_s3_bucket.puep_images_s3_bucket.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.images_bucket_access.id
