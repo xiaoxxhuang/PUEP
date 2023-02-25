@@ -30,6 +30,26 @@ resource "aws_s3_bucket_public_access_block" "puep_bucket_allow_public_access" {
 resource "aws_s3_bucket_policy" "puep_images_bucket_policy" {
   bucket = aws_s3_bucket.puep_images_s3_bucket.id
   policy = jsonencode(
+    # {
+    #   "Version": "2008-10-17",
+    #   "Id": "PolicyForCloudFrontPrivateContent",
+    #   "Statement": [
+    #     {
+    #       "Sid": "AllowCloudFrontServicePrincipal",
+    #       "Effect": "Allow",
+    #       "Principal": {
+    #         "Service": "cloudfront.amazonaws.com"
+    #       },
+    #       "Action": "s3:GetObject",
+    #       "Resource": "arn:aws:s3:::puep-dev-images-s3-bucket/*",
+    #       "Condition": {
+    #         "StringEquals": {
+    #           "AWS:SourceArn": "arn:aws:cloudfront::385526948728:distribution/E377H9VW6UCVZM"
+    #         }
+    #       }
+    #     }
+    #   ]
+    # }
     {
       "Version": "2012-10-17",
       "Statement": [
