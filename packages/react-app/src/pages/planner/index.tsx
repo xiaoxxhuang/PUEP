@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import FilterFocus from "../../components/filter-focus";
 import DisplayStats from "../../components/display-stats";
@@ -7,6 +7,7 @@ import PokemonsContainer from "../../components/pokemons-container";
 import { StatsDataOptions, PokemonStat } from "./types";
 
 function Planner() {
+  const [selectedValue, setSelectedValue] = useState("");
   const options1 = [
     { value: "hp1", label: "HP" },
     { value: "attack1", label: "Attack" },
@@ -55,11 +56,23 @@ function Planner() {
     critical_rate: "0%",
     lifesteal: "0%",
   };
-  const [selectedValue, setSelectedValue] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
   };
+
+  useEffect(() => {
+    console.log(selectedValue);
+    fetch(
+      "https://h991n8hmi8.execute-api.ap-southeast-1.amazonaws.com/serverless_lambda_saws_apigatewayv2_stage/puep/emblems?primaryFocus=hp",
+      {
+        method: "GET",
+        mode: "no-cors"
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }, [selectedValue]);
 
   return (
     <div className="puep-app">

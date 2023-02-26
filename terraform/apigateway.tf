@@ -1,6 +1,14 @@
 resource "aws_apigatewayv2_api" "lambda" {
   name          = "serverless_lambda_gw"
   protocol_type = "HTTP"
+
+   cors_configuration {
+    allow_credentials = true
+    allow_headers     = ["Authorization"]
+    allow_methods     = ["GET", "POST"]
+    allow_origins     = ["http://localhost:3000/", "https://d1c5kto3i3u88i.cloudfront.net/"]
+    max_age           = 300
+  }
 }
 
 resource "aws_apigatewayv2_stage" "lambda" {

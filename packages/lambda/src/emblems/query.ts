@@ -26,7 +26,7 @@ export async function getEmblemsByFocuses(
   const filterExpression =
     "begins_with(#pk, :prefix) " +
     "AND #primaryFocus >= :primaryFocus " +
-    "AND not exist(#secondaryFocus) " +
+    "AND not attribute_exists(#secondaryFocus) " +
     "AND #type = :type";
   const params: DynamoDB.DocumentClient.ScanInput = {
     TableName: Utils.getTableName(),
