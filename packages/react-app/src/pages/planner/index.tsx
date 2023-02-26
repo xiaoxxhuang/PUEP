@@ -62,13 +62,8 @@ function Planner() {
   };
 
   useEffect(() => {
-    console.log(selectedValue);
     fetch(
-      "https://h991n8hmi8.execute-api.ap-southeast-1.amazonaws.com/serverless_lambda_saws_apigatewayv2_stage/puep/emblems?primaryFocus=hp",
-      {
-        method: "GET",
-        mode: "no-cors"
-      }
+      "https://h991n8hmi8.execute-api.ap-southeast-1.amazonaws.com/serverless_lambda_saws_apigatewayv2_stage/puep/emblems?primaryFocus=hp"
     )
       .then((response) => response.json())
       .then((data) => console.log(data));
