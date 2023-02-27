@@ -1,7 +1,7 @@
 export const Url = {
   EMBLEM_API:
     "https://h991n8hmi8.execute-api.ap-southeast-1.amazonaws.com/serverless_lambda_saws_apigatewayv2_stage/puep/emblems",
-  IMAGES_BUCKET: "https://d385ls41y80ogs.cloudfront.net",
+  IMAGES_BUCKET: "https://d385ls41y80ogs.cloudfront.net/emblems",
 };
 
 export const primaryFocusOptions = [
@@ -26,7 +26,7 @@ export const secondaryFocusOptions = [
   { value: "cooldown_rate2", label: "Cooldown Rate" },
 ];
 
-export const emblemsContainer = [
+export const emblemsContainerOptions = [
   { order: 0, rotateDegree: 0 },
   { order: 1, rotateDegree: 36 },
   { order: 2, rotateDegree: 72 },

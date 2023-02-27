@@ -4,20 +4,22 @@ import {
   Url,
   primaryFocusOptions,
   secondaryFocusOptions,
-  emblemsContainer,
+  emblemsContainerOptions,
 } from "../../config";
-import { useEffectFocus } from "../../hooks/useEffectFocus";
 import { StatsDataOptions, PokemonStat, EmblemsData } from "./types";
 
 import FilterFocus from "../../components/filter-focus";
 import DisplayStats from "../../components/display-stats";
-import EmblemsContainer from "../../components/emblems-container";
+import EmblemsContainer, {
+  EmblemsOptions,
+} from "../../components/emblems-container";
 import PokemonsContainer from "../../components/pokemons-container";
 
 function Planner() {
-  const primaryFocus = useEffectFocus();
-  const secondaryFocus = useEffectFocus();
-  const [emblemStat, setEmblemStat] = useState({});
+  const [primaryFocus, setPrimaryFocus] = useState("");
+  const [secondaryFocus, setSecondaryFocus] = useState("");
+  const [emblemStat, setEmblemStat] = useState<PokemonStat>({});
+  const [emblemsOptions, setEmblemsOptions] = useState<EmblemsOptions[]>([]);
   console.log("checking render counts");
 
   const pokemonStat: PokemonStat = {
@@ -29,24 +31,32 @@ function Planner() {
     special_defense: 174,
     cooldown_rate: 0.25,
     critical_rate: 0,
-    lifesteal: 0,
+  };
+  const handlePrimaryFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrimaryFocus(event.target.value);
+  };
+  const handleSecondaryFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSecondaryFocus(event.target.value);
   };
 
   useEffect(() => {
-    if (primaryFocus.value) {
-      let url =
-        Url.EMBLEM_API + `?primaryFocus=` + primaryFocus.value.split("1")[0];
-      if (secondaryFocus.value) {
-        url = url + `&secondaryFocus=` + secondaryFocus.value.split("2")[0];
+    if (primaryFocus) {
+      let url = Url.EMBLEM_API + `?primaryFocus=` + primaryFocus.split("1")[0];
+      if (secondaryFocus) {
+        url = url + `&secondaryFocus=` + secondaryFocus.split("2")[0];
       }
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          const result = processData(data.data.slice(0, 10));
-          setEmblemStat(result);
+          console.log(data)
+          const [statResult, emblemImageResult] = processData(
+            data.data.slice(0, 10)
+          );
+          setEmblemStat(statResult);
+          setEmblemsOptions(emblemImageResult);
         });
     }
-  }, [primaryFocus.value, secondaryFocus.value]);
+  }, [primaryFocus, secondaryFocus]);
 
   return (
     <div className="puep-app">
@@ -54,18 +64,20 @@ function Planner() {
         <FilterFocus
           options={primaryFocusOptions}
           children="Primary Focus:"
-          {...primaryFocus}
+          value={primaryFocus}
+          onChange={handlePrimaryFocus}
         />
         <FilterFocus
           options={secondaryFocusOptions}
           children="Secondary Focus:"
-          {...secondaryFocus}
+          value={secondaryFocus}
+          onChange={handleSecondaryFocus}
         />
       </div>
       <div>
         <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <EmblemsContainer options={emblemsContainer} />
+            <EmblemsContainer options={emblemsOptions} />
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStats
@@ -78,7 +90,7 @@ function Planner() {
       <div>
         <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <PokemonsContainer options={emblemsContainer} />
+            <PokemonsContainer options={emblemsOptions} />
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStats
@@ -95,18 +107,32 @@ function Planner() {
   );
 }
 
-function processData(datas: EmblemsData[]): PokemonStat {
-  const result: PokemonStat = {};
+function processData(datas: EmblemsData[]): [PokemonStat, EmblemsOptions[]] {
+  const statResult: PokemonStat = {};
+  const imageUrls: string[] = [];
   datas.forEach((data) => {
+    imageUrls.push(data["url"]);
     const prepareData: PokemonStat = prepareResponse(data);
     Object.keys(prepareData).forEach((key) => {
       const k = key as keyof PokemonStat;
       if (data[k]) {
-        result[k] = (result[k] || 0) + data[k]!;
+        statResult[k] = (statResult[k] || 0) + data[k]!;
       }
     });
   });
-  return result;
+  
+  const emblemImageResult = processEmblemImages(imageUrls);
+  return [statResult, emblemImageResult];
+}
+
+function processEmblemImages(urls: string[]) {
+  const emblemImageResult = emblemsContainerOptions.map((object, index) => {
+    return {
+      ...object,
+      imageUrl: urls[index] ? Url.IMAGES_BUCKET + urls[index]: undefined,
+    };
+  });
+  return emblemImageResult;
 }
 
 function prepareResponse(data: EmblemsData): PokemonStat {
@@ -119,7 +145,7 @@ function prepareResponse(data: EmblemsData): PokemonStat {
     special_defense: data.special_defense,
     cooldown_rate: data.cooldown_rate,
     critical_rate: data.critical_rate,
-    lifesteal: data.lifesteal,
+    movement_speed: data.movement_speed,
   };
 }
 

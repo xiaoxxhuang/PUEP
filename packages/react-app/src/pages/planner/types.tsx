@@ -12,7 +12,7 @@ export interface PokemonStat {
   special_defense?: number;
   cooldown_rate?: number;
   critical_rate?: number;
-  lifesteal?: number;
+  movement_speed?: number;
 }
 
 export interface EmblemsData {
@@ -29,4 +29,5 @@ export interface EmblemsData {
   cooldown_rate?: number;
   critical_rate?: number;
   lifesteal?: number;
+  movement_speed?:number;
 }
