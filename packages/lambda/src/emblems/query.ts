@@ -19,16 +19,51 @@ export async function getEmblemById(
   }
 }
 
+export async function getEmblemsByFocuses(
+  primaryFocus: string,
+  secondaryFocus: string
+): Promise<IDBEmblem[] | undefined> {
+  const filterExpression =
+    "begins_with(#pk, :prefix) " +
+    "AND #primaryFocus >= :primaryFocus " +
+    "AND not attribute_exists(#secondaryFocus) " +
+    "AND #type = :type";
+  const params: DynamoDB.DocumentClient.ScanInput = {
+    TableName: Utils.getTableName(),
+    FilterExpression: filterExpression,
+    ExpressionAttributeNames: {
+      "#pk": "pk",
+      "#primaryFocus": `${primaryFocus}`,
+      "#secondaryFocus": `${secondaryFocus}`,
+      "#type": "type",
+    },
+    ExpressionAttributeValues: {
+      ":prefix": "emblem:",
+      ":primaryFocus": 0,
+      ":type": "gold",
+    },
+  };
+
+  const results = await Utils.getDocumentClient().scan(params).promise();
+  if (results?.Items && results.Items.length > 0) {
+    return results.Items as IDBEmblem[];
+  }
+}
+
 export async function getEmblemsByPrimaryFocus(
   primaryFocus: string
 ): Promise<IDBEmblem[] | undefined> {
+  const filterExpression =
+    "begins_with(#pk, :prefix) " +
+    "AND #focus >= :focus " +
+    "AND #type = :type";
   const params: DynamoDB.DocumentClient.ScanInput = {
     TableName: Utils.getTableName(),
-    FilterExpression:
-      "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
+    FilterExpression: filterExpression,
     ExpressionAttributeNames: {
       "#pk": "pk",
       "#focus": `${primaryFocus}`,
+      "#type": "type",
     },
     ExpressionAttributeValues: {
       ":prefix": "emblem:",

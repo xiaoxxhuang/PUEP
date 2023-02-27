@@ -1,4 +1,8 @@
-import { getEmblemById, getEmblemsByPrimaryFocus } from "./query";
+import {
+  getEmblemById,
+  getEmblemsByPrimaryFocus,
+  getEmblemsByFocuses,
+} from "./query";
 import { Utils } from "../utils";
 import { IDBEmblem } from "./types";
 
@@ -108,10 +112,11 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
+          "begins_with(#pk, :prefix) AND #focus >= :focus AND #type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
+          "#type": "type",
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
@@ -136,10 +141,11 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
+          "begins_with(#pk, :prefix) AND #focus >= :focus AND #type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
+          "#type": "type",
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
@@ -164,10 +170,11 @@ describe("Dynamodb query", () => {
       expect(mockDocumentClient.scan).toHaveBeenCalledWith({
         TableName: Utils.getTableName(),
         FilterExpression:
-          "begins_with(#pk, :prefix) AND attribute_exists(#focus) AND #focus >= :focus AND type = :type",
+          "begins_with(#pk, :prefix) AND #focus >= :focus AND #type = :type",
         ExpressionAttributeNames: {
           "#pk": "pk",
           "#focus": `${dummyPrimaryFocus}`,
+          "#type": "type",
         },
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
@@ -175,6 +182,71 @@ describe("Dynamodb query", () => {
           ":type": "gold",
         },
       });
+    });
+  });
+
+  describe("getEmblemsByFocuses()", () => {
+    const dummyPrimaryFocus = "hp";
+    const dummySecondaryFocus = "attack";
+    const dummyEmblems: IDBEmblem[] = [
+      {
+        pk: `emblem:`,
+        color: "green",
+        hp: 30,
+        defense: -3,
+        url: "https//example.com",
+      },
+    ];
+
+    it("shoud successfully get emblems by focuses", async () => {
+      const mockDocumentClient = {
+        scan: jest.fn().mockReturnThis(),
+        promise: jest.fn().mockResolvedValue({ Items: dummyEmblems }),
+      };
+      (Utils.getDocumentClient as jest.Mock).mockReturnValue(
+        mockDocumentClient
+      );
+
+      const result = await getEmblemsByFocuses(
+        dummyPrimaryFocus,
+        dummySecondaryFocus
+      );
+
+      expect(result).toStrictEqual(dummyEmblems);
+    });
+
+    it("shoud return undefined when emblem does not exist", async () => {
+      const mockDocumentClient = {
+        scan: jest.fn().mockReturnThis(),
+        promise: jest.fn().mockResolvedValue({}),
+      };
+      (Utils.getDocumentClient as jest.Mock).mockReturnValue(
+        mockDocumentClient
+      );
+
+      const result = await getEmblemsByFocuses(
+        dummyPrimaryFocus,
+        dummySecondaryFocus
+      );
+
+      expect(result).toBeUndefined();
+    });
+
+    it("shoud return undefined when result is undefined", async () => {
+      const mockDocumentClient = {
+        scan: jest.fn().mockReturnThis(),
+        promise: jest.fn().mockResolvedValue(undefined),
+      };
+      (Utils.getDocumentClient as jest.Mock).mockReturnValue(
+        mockDocumentClient
+      );
+
+      const result = await getEmblemsByFocuses(
+        dummyPrimaryFocus,
+        dummySecondaryFocus
+      );
+
+      expect(result).toBeUndefined();
     });
   });
 });

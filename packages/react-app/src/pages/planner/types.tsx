@@ -4,13 +4,29 @@ export interface StatsDataOptions {
 }
 
 export interface PokemonStat {
-  hp?: string;
-  attack?: string;
-  special_attack?: string;
-  attack_speed?: string;
-  defense?: string;
-  special_defense?: string;
-  cooldown_rate?: string;
-  critical_rate?: string;
-  lifesteal?: string;
+  hp?: number;
+  attack?: number;
+  special_attack?: number;
+  attack_speed?: number;
+  defense?: number;
+  special_defense?: number;
+  cooldown_rate?: number;
+  critical_rate?: number;
+  lifesteal?: number;
+}
+
+export interface EmblemsData {
+  pk: string;
+  type: string;
+  color: string;
+  url: string;
+  hp?: number;
+  attack?: number;
+  special_attack?: number;
+  attack_speed?: number;
+  defense?: number;
+  special_defense?: number;
+  cooldown_rate?: number;
+  critical_rate?: number;
+  lifesteal?: number;
 }

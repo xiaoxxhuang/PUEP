@@ -1,80 +1,65 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
+import {
+  Url,
+  primaryFocusOptions,
+  secondaryFocusOptions,
+  emblemsContainer,
+} from "../../config";
+import { useEffectFocus } from "../../hooks/useEffectFocus";
+import { StatsDataOptions, PokemonStat, EmblemsData } from "./types";
+
 import FilterFocus from "../../components/filter-focus";
 import DisplayStats from "../../components/display-stats";
 import EmblemsContainer from "../../components/emblems-container";
 import PokemonsContainer from "../../components/pokemons-container";
-import { StatsDataOptions, PokemonStat } from "./types";
 
 function Planner() {
-  const options1 = [
-    { value: "hp1", label: "HP" },
-    { value: "attack1", label: "Attack" },
-    { value: "special_attack1", label: "Special Attack" },
-    { value: "defense1", label: "Defense" },
-    { value: "special_defense1", label: "Special Defense" },
-    { value: "movement_speed1", label: "Movement Speed" },
-    { value: "critical_rate1", label: "Critical Hit Rate" },
-    { value: "cooldown_rate1", label: "Cooldown Rate" },
-  ];
-  const options2 = [
-    { value: "hp2", label: "HP" },
-    { value: "attack2", label: "Attack" },
-    { value: "special_attack2", label: "Special Attack" },
-    { value: "defense2", label: "Defense" },
-    { value: "special_defense2", label: "Special Defense" },
-    { value: "movement_speed2", label: "Movement Speed" },
-    { value: "critical_rate2", label: "Critical Hit Rate" },
-    { value: "cooldown_rate2", label: "Cooldown Rate" },
-  ];
-  const emblemsContainer = [
-    { order: 0, rotateDegree: 0 },
-    { order: 1, rotateDegree: 36 },
-    { order: 2, rotateDegree: 72 },
-    { order: 3, rotateDegree: 108 },
-    { order: 4, rotateDegree: 144 },
-    { order: 5, rotateDegree: 180 },
-    { order: 6, rotateDegree: 216 },
-    { order: 7, rotateDegree: 252 },
-    { order: 8, rotateDegree: 288 },
-    { order: 9, rotateDegree: 324 },
-  ];
-  const emblemStat: PokemonStat = {
-    attack: "+1.5",
-    special_attack: "+1.5",
-    defense: "-4",
-  };
-  const pokemonStat: PokemonStat = {
-    hp: "6580",
-    attack: "288.2",
-    special_attack: "962",
-    attack_speed: "20.21%",
-    defense: "230",
-    special_defense: "174",
-    cooldown_rate: "25%",
-    critical_rate: "0%",
-    lifesteal: "0%",
-  };
-  const [selectedValue, setSelectedValue] = useState("");
+  const primaryFocus = useEffectFocus();
+  const secondaryFocus = useEffectFocus();
+  const [emblemStat, setEmblemStat] = useState({});
+  console.log("checking render counts");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+  const pokemonStat: PokemonStat = {
+    hp: 6580,
+    attack: 288.2,
+    special_attack: 962,
+    attack_speed: 0.2021,
+    defense: 230,
+    special_defense: 174,
+    cooldown_rate: 0.25,
+    critical_rate: 0,
+    lifesteal: 0,
   };
+
+  useEffect(() => {
+    if (primaryFocus.value) {
+      let url =
+        Url.EMBLEM_API + `?primaryFocus=` + primaryFocus.value.split("1")[0];
+      if (secondaryFocus.value) {
+        url = url + `&secondaryFocus=` + secondaryFocus.value.split("2")[0];
+      }
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          const result = processData(data.data.slice(0, 10));
+          setEmblemStat(result);
+        });
+    }
+  }, [primaryFocus.value, secondaryFocus.value]);
 
   return (
     <div className="puep-app">
       <div>
         <FilterFocus
-          options={options1}
-          value={selectedValue}
+          options={primaryFocusOptions}
           children="Primary Focus:"
-          onChange={handleChange}
+          {...primaryFocus}
         />
         <FilterFocus
-          options={options2}
-          value={selectedValue}
+          options={secondaryFocusOptions}
           children="Secondary Focus:"
-          onChange={handleChange}
+          {...secondaryFocus}
         />
       </div>
       <div>
@@ -110,15 +95,43 @@ function Planner() {
   );
 }
 
+function processData(datas: EmblemsData[]): PokemonStat {
+  const result: PokemonStat = {};
+  datas.forEach((data) => {
+    const prepareData: PokemonStat = prepareResponse(data);
+    Object.keys(prepareData).forEach((key) => {
+      const k = key as keyof PokemonStat;
+      if (data[k]) {
+        result[k] = (result[k] || 0) + data[k]!;
+      }
+    });
+  });
+  return result;
+}
+
+function prepareResponse(data: EmblemsData): PokemonStat {
+  return {
+    hp: data.hp,
+    attack: data.attack,
+    special_attack: data.special_attack,
+    attack_speed: data.attack_speed,
+    defense: data.defense,
+    special_defense: data.special_defense,
+    cooldown_rate: data.cooldown_rate,
+    critical_rate: data.critical_rate,
+    lifesteal: data.lifesteal,
+  };
+}
+
 function calculatePokemonStat(
   emblemStat: PokemonStat,
   pokemonStat: PokemonStat
 ) {
   for (const stat in emblemStat) {
     const key = stat as keyof PokemonStat;
-    pokemonStat[key] = (
-      Number(pokemonStat[key]) + Number(emblemStat[key])
-    ).toString();
+    if (pokemonStat[key] && emblemStat[key]) {
+      pokemonStat[key]! += emblemStat[key]!;
+    }
   }
   return formatStatOptions(pokemonStat);
 }
