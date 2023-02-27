@@ -48,7 +48,6 @@ function Planner() {
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           const [statResult, emblemImageResult] = processData(
             data.data.slice(0, 10)
           );

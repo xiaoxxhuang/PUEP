@@ -25,7 +25,7 @@ function EmblemsContainer(props: Props) {
     >
       <div className="puep-circle">
         {option.imageUrl && (
-          <img src={option.imageUrl} height="85px" width="85px"></img>
+          <img src={option.imageUrl} alt="" height="85px" width="85px"></img>
         )}
       </div>
     </div>
