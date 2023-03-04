@@ -87,7 +87,6 @@ describe("Dynamodb query", () => {
   });
 
   describe("getPokemonNamesAndUrls()", () => {
-    const dummyLimit = "0";
     const dummyPokemons: IDBPokemonNamesAndUrls[] = [
       { name: "azumarill", url: "/0003.png" },
       { name: "absol", url: "/0001.png" },
@@ -102,7 +101,7 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getPokemonNamesAndUrls(dummyLimit);
+      const result = await getPokemonNamesAndUrls();
 
       expect(result).toStrictEqual(dummyPokemons);
     });
@@ -116,7 +115,7 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getPokemonNamesAndUrls(dummyLimit);
+      const result = await getPokemonNamesAndUrls();
 
       expect(result).toBeUndefined();
     });
@@ -130,7 +129,7 @@ describe("Dynamodb query", () => {
         mockDocumentClient
       );
 
-      const result = await getPokemonNamesAndUrls(dummyLimit);
+      const result = await getPokemonNamesAndUrls();
 
       expect(result).toBeUndefined();
     });

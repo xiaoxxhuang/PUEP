@@ -6,7 +6,6 @@ export async function pokemonHandler(
   pokemonParam: APIGatewayProxyEventQueryStringParameters | null
 ) {
   const pokemonId = pokemonParam?.id;
-  const limit = pokemonParam?.limit;
   if (pokemonId) {
     return {
       statusCode: 200,
@@ -15,12 +14,12 @@ export async function pokemonHandler(
         data: await getPokemonDataById(pokemonId),
       }),
     };
-  } else if (limit) {
+  } else if (pokemonParam == null) {
     return {
       statusCode: 200,
       body: JSON.stringify({
         status: "ok",
-        data: await getPokemonsData(limit),
+        data: await getPokemonsData(),
       }),
     };
   }
@@ -35,7 +34,7 @@ async function getPokemonDataById(id: string): Promise<IDBPokemon | {}> {
   return emblem ? emblem : {};
 }
 
-async function getPokemonsData(limit: string): Promise<IDBPokemonNamesAndUrls | {}> {
-  const emblem = await getPokemonNamesAndUrls(limit);
+async function getPokemonsData(): Promise<IDBPokemonNamesAndUrls | {}> {
+  const emblem = await getPokemonNamesAndUrls();
   return emblem ? emblem : {};
 }

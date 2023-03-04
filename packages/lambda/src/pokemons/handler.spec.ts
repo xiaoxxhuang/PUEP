@@ -58,23 +58,20 @@ describe("pokemonHandler", () => {
       expect(result).toStrictEqual(dummyInvalidDataResult);
     });
 
-    it("should return status 400 when pokemon not found", async () => {
+    it("should return status 400 when proxy/param not found", async () => {
       const dummtInvalidResult: APIGatewayProxyResult = {
         statusCode: 400,
         body: "Pokemon not found",
       };
 
-      const result = await pokemonHandler(null);
+      const result = await pokemonHandler({ watever: "test" });
 
       expect(result).toStrictEqual(dummtInvalidResult);
     });
   });
 
   describe("getPokemonNamesAndUrls()", () => {
-    const dummyLimit = "0";
-    const dummyPokemonParam: APIGatewayProxyEventQueryStringParameters = {
-      limit: dummyLimit,
-    };
+    const dummyPokemonParam = null;
     const dummyPokemons: IDBPokemonNamesAndUrls[] = [
       { name: "azumarill", url: "/0003.png" },
       { name: "absol", url: "/0001.png" },

@@ -19,20 +19,21 @@ export async function getPokemonById(
   }
 }
 
-export async function getPokemonNamesAndUrls(
-  limit: string
-): Promise<IDBPokemonNamesAndUrls[] | undefined> {
+export async function getPokemonNamesAndUrls(): Promise<
+  IDBPokemonNamesAndUrls[] | undefined
+> {
   const params: DynamoDB.DocumentClient.ScanInput = {
     TableName: Utils.getTableName(),
     FilterExpression: "begins_with(#pk, :prefix) ",
+    ProjectionExpression: "#name, #url",
     ExpressionAttributeNames: {
       "#pk": "pk",
+      "#name": "name",
+      "#url": "url",
     },
     ExpressionAttributeValues: {
       ":prefix": "pokemon:",
     },
-    ProjectionExpression: "name, url",
-    Limit: parseInt(limit),
   };
 
   const results = await Utils.getDocumentClient().scan(params).promise();
