@@ -1,9 +1,7 @@
 import React from "react";
-import "./index.css";
+import "./index.scss";
+import { PokemonOptions } from "../../pages/planner/types";
 
-export interface PokemonOptions {
-  order: number;
-}
 export interface Props extends React.HTMLProps<HTMLDivElement> {
   options: PokemonOptions[];
 }
@@ -11,15 +9,14 @@ export interface Props extends React.HTMLProps<HTMLDivElement> {
 function PokemonsContainer(props: Props) {
   const { options } = props;
 
-  const pokemons = options.map((option) => (
-    <div key={`pokemon_${option.order}`} className="puep-pokemon"></div>
+  const pokemons = options.map((option, index) => (
+    <div key={`pokemon_${index}`} className="puep-pokemon">
+      <img src={option.url} alt="" height="88px" width="88px" />
+      <div>{option.name.toUpperCase()}</div>
+    </div>
   ));
 
-  return (
-    <div className="puep-pokemons-container">
-      {pokemons}
-    </div>
-  );
+  return <div className="puep-pokemons-container">{pokemons}</div>;
 }
 
 export default PokemonsContainer;

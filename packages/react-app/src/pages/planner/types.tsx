@@ -3,7 +3,7 @@ export interface StatsDataOptions {
   value: string;
 }
 
-export interface PokemonStat {
+export interface EmblemsStat {
   hp?: number;
   attack?: number;
   special_attack?: number;
@@ -30,4 +30,9 @@ export interface EmblemsData {
   critical_rate?: number;
   lifesteal?: number;
   movement_speed?:number;
+}
+
+export interface PokemonOptions {
+  name: string;
+  url: string;
 }

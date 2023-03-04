@@ -1,7 +1,11 @@
 export const Url = {
-  EMBLEM_API:
-    "https://h991n8hmi8.execute-api.ap-southeast-1.amazonaws.com/serverless_lambda_saws_apigatewayv2_stage/puep/emblems",
-  IMAGES_BUCKET: "https://d385ls41y80ogs.cloudfront.net/emblems",
+  API: "https://h991n8hmi8.execute-api.ap-southeast-1.amazonaws.com/serverless_lambda_saws_apigatewayv2_stage/puep/",
+  IMAGES_BUCKET: "https://d385ls41y80ogs.cloudfront.net/",
+};
+
+export const Proxy = {
+  EMBLEMS: "emblems",
+  POKEMONS: "pokemons",
 };
 
 export const primaryFocusOptions = [

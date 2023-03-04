@@ -2,7 +2,10 @@ import { render } from "@testing-library/react";
 import PokemonsContainer from "./index";
 
 describe("Render PokemonsContainer", () => {
-  const options = [{ order: 1 }, { order: 2 }];
+  const options = [
+    { name: "pikachu", url: "https://example.com/1.png" },
+    { name: "absol", url: "https://example.com/2.png" },
+  ];
 
   it("Should renders the correct number of stats", () => {
     const { container } = render(<PokemonsContainer options={options} />);
