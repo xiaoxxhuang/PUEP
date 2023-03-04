@@ -1,28 +1,41 @@
 import { APIGatewayProxyEventQueryStringParameters } from "aws-lambda";
-import { getPokemonStatsByName } from "./query";
-import { IDBPokemon } from "./types";
+import { getPokemonById, getPokemonNamesAndUrls } from "./query";
+import { IDBPokemon, IDBPokemonNamesAndUrls } from "./types";
 
 export async function pokemonHandler(
   pokemonParam: APIGatewayProxyEventQueryStringParameters | null
 ) {
-  const name = pokemonParam?.name;
-  const type = pokemonParam?.type;
-  if (name && type) {
+  const pokemonId = pokemonParam?.id;
+  const limit = pokemonParam?.limit;
+  if (pokemonId) {
     return {
       statusCode: 200,
       body: JSON.stringify({
         status: "ok",
-        data: await getPokemonData(name, type),
+        data: await getPokemonDataById(pokemonId),
+      }),
+    };
+  } else if (limit) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: "ok",
+        data: await getPokemonsData(limit),
       }),
     };
   }
   return {
     statusCode: 400,
-    body: "Name and Type not provided",
+    body: "Pokemon not found",
   };
 }
 
-async function getPokemonData(name: string, type: string): Promise<IDBPokemon | {}> {
-  const emblem = await getPokemonStatsByName(name, type);
+async function getPokemonDataById(id: string): Promise<IDBPokemon | {}> {
+  const emblem = await getPokemonById(id);
+  return emblem ? emblem : {};
+}
+
+async function getPokemonsData(limit: string): Promise<IDBPokemonNamesAndUrls | {}> {
+  const emblem = await getPokemonNamesAndUrls(limit);
   return emblem ? emblem : {};
 }

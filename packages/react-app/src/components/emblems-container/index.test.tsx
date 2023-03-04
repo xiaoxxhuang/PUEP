@@ -2,15 +2,34 @@ import { render } from "@testing-library/react";
 import EmblemsContainer from "./index";
 
 describe("Render EmblemsContainer", () => {
-  const options = [
-    { order: 1, rotateDegree: 0, imageUrl: "http://example.com" },
-    { order: 2, rotateDegree: 36, imageUrl: "http://example.com" },
+  const imageUrls = [
+    "https://example.com/image1.png",
+    "https://example.com/image2.png",
   ];
 
-  it("Should renders the correct number of stats", () => {
-    const { container } = render(
-      <EmblemsContainer options={options}/>
-    );
-    expect(container.getElementsByClassName("puep-emblem")).toHaveLength(2);
+  it("renders emblems with image provided", () => {
+    const { container } = render(<EmblemsContainer imageUrls={imageUrls} />);
+
+    expect(
+      container.getElementsByClassName("puep-circle")[0].children[0]
+    ).toHaveAttribute("src", imageUrls[0]);
+    expect(
+      container.getElementsByClassName("puep-circle")[0].children[0]
+    ).toHaveAttribute("height", "85px");
+    expect(
+      container.getElementsByClassName("puep-circle")[0].children[0]
+    ).toHaveAttribute("width", "85px");
+  });
+
+  it("renders the correct number of emblems", () => {
+    const { container } = render(<EmblemsContainer imageUrls={imageUrls} />);
+    expect(container.getElementsByClassName("puep-emblem")).toHaveLength(10);
+  });
+
+  it("renders the correct number of imageUrls", () => {
+    const { getByText } = render(<EmblemsContainer imageUrls={imageUrls} />);
+
+    const imageNumber = getByText(`${imageUrls.length}/10`);
+    expect(imageNumber).toBeInTheDocument();
   });
 });

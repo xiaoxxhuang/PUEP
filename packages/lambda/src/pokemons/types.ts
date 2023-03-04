@@ -1,13 +1,37 @@
+interface IDBPokemonEvolution {
+  level: number;
+  name: string;
+  url: string;
+}
+
+interface IDBPokemonStat {
+  attack: number;
+  attack_speed: number;
+  cooldown_rate: number;
+  critical_rate: number;
+  defense: number;
+  heal: number;
+  hp: number;
+  lifesteal: number;
+  movement_speed: number;
+  special_attack: number;
+  special_defense: number;
+  tenacity: number;
+}
+
 export interface IDBPokemon {
   pk: string;
-  sk: string;
-  attack: number;
-  special_attack: number;
-  attack_speed: number;
-  defense: number;
-  special_defense: number;
-  hp: number;
-  critical_rate: number;
-  cdr: number;
-  lifesteal: number;
+  damageType: string;
+  difficulty: string;
+  evolution?: IDBPokemonEvolution[];
+  name: string;
+  range: string;
+  role: string;
+  url: string;
+  stats: IDBPokemonStat[];
+}
+
+export interface IDBPokemonNamesAndUrls {
+  name: string;
+  url: string;
 }

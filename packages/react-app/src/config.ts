@@ -27,14 +27,14 @@ export const secondaryFocusOptions = [
 ];
 
 export const emblemsContainerOptions = [
-  { order: 0, rotateDegree: 0 },
-  { order: 1, rotateDegree: 36 },
-  { order: 2, rotateDegree: 72 },
-  { order: 3, rotateDegree: 108 },
-  { order: 4, rotateDegree: 144 },
-  { order: 5, rotateDegree: 180 },
-  { order: 6, rotateDegree: 216 },
-  { order: 7, rotateDegree: 252 },
-  { order: 8, rotateDegree: 288 },
-  { order: 9, rotateDegree: 324 },
+  { order: 0, rotateDegree: 270 },
+  { order: 1, rotateDegree: 234 },
+  { order: 2, rotateDegree: 198 },
+  { order: 3, rotateDegree: 162 },
+  { order: 4, rotateDegree: 126 },
+  { order: 5, rotateDegree: 90 },
+  { order: 6, rotateDegree: 54 },
+  { order: 7, rotateDegree: 18 },
+  { order: 8, rotateDegree: 342 },
+  { order: 9, rotateDegree: 306 },
 ];

@@ -1,31 +1,25 @@
 import React from "react";
 import "./index.css";
+import { emblemsContainerOptions } from "../../config";
 
-export interface EmblemsOptions {
-  order: number;
-  rotateDegree: number;
-  imageUrl: string | undefined;
-}
 export interface Props extends React.HTMLProps<HTMLDivElement> {
-  options: EmblemsOptions[];
+  imageUrls: string[];
 }
 
 function EmblemsContainer(props: Props) {
-  const { options } = props;
+  const { imageUrls } = props;
 
-  const emblems = options.map((option, index) => (
+  const emblems = emblemsContainerOptions.map((option, index) => (
     <div
       key={`emblem_${index}`}
       className="puep-emblem"
       style={{
-        transform: `rotate(${index * 36}deg) translate(125px) rotate(-${
-          index * 36
-        }deg)`,
+        transform: `rotate(${option.rotateDegree}deg) translate(125px) rotate(-${option.rotateDegree}deg)`,
       }}
     >
       <div className="puep-circle">
-        {option.imageUrl && (
-          <img src={option.imageUrl} alt="" height="85px" width="85px"></img>
+        {imageUrls[index] && (
+          <img src={imageUrls[index]} alt="" height="85px" width="85px"></img>
         )}
       </div>
     </div>
@@ -33,7 +27,7 @@ function EmblemsContainer(props: Props) {
   return (
     <div className="puep-emblems-container">
       {emblems}
-      {options.length}/10
+      <span>{imageUrls.length}/10</span>
     </div>
   );
 }

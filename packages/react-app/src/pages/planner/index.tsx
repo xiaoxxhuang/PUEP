@@ -10,16 +10,14 @@ import { StatsDataOptions, PokemonStat, EmblemsData } from "./types";
 
 import FilterFocus from "../../components/filter-focus";
 import DisplayStats from "../../components/display-stats";
-import EmblemsContainer, {
-  EmblemsOptions,
-} from "../../components/emblems-container";
+import EmblemsContainer from "../../components/emblems-container";
 import PokemonsContainer from "../../components/pokemons-container";
 
 function Planner() {
   const [primaryFocus, setPrimaryFocus] = useState("");
   const [secondaryFocus, setSecondaryFocus] = useState("");
   const [emblemStat, setEmblemStat] = useState<PokemonStat>({});
-  const [emblemsOptions, setEmblemsOptions] = useState<EmblemsOptions[]>([]);
+  const [emblemImageUrls, setEmblemImageUrls] = useState<string[]>([]);
   console.log("checking render counts");
 
   const pokemonStat: PokemonStat = {
@@ -48,11 +46,9 @@ function Planner() {
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          const [statResult, emblemImageResult] = processData(
-            data.data.slice(0, 10)
-          );
+          const [statResult, imageUrls] = processData(data.data.slice(0, 10));
           setEmblemStat(statResult);
-          setEmblemsOptions(emblemImageResult);
+          setEmblemImageUrls(imageUrls);
         });
     }
   }, [primaryFocus, secondaryFocus]);
@@ -76,7 +72,7 @@ function Planner() {
       <div>
         <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <EmblemsContainer options={emblemsOptions} />
+            <EmblemsContainer imageUrls={emblemImageUrls} />
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStats
@@ -89,7 +85,7 @@ function Planner() {
       <div>
         <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <PokemonsContainer options={emblemsOptions} />
+            <PokemonsContainer options={emblemsContainerOptions} />
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStats
@@ -106,7 +102,7 @@ function Planner() {
   );
 }
 
-function processData(datas: EmblemsData[]): [PokemonStat, EmblemsOptions[]] {
+function processData(datas: EmblemsData[]): [PokemonStat, string[]] {
   const statResult: PokemonStat = {};
   const imageUrls: string[] = [];
   datas.forEach((data) => {
@@ -115,23 +111,20 @@ function processData(datas: EmblemsData[]): [PokemonStat, EmblemsOptions[]] {
     Object.keys(prepareData).forEach((key) => {
       const k = key as keyof PokemonStat;
       if (data[k]) {
-        statResult[k] = (statResult[k] || 0) + data[k]!;
+        statResult[k] = parseFloat(
+          ((statResult[k] || 0) + (data[k] || 0)).toFixed(1)
+        );
       }
     });
   });
-  
-  const emblemImageResult = processEmblemImages(imageUrls);
-  return [statResult, emblemImageResult];
+
+  const emblemImageUrls = processImageUrls(imageUrls);
+  return [statResult, emblemImageUrls];
 }
 
-function processEmblemImages(urls: string[]) {
-  const emblemImageResult = emblemsContainerOptions.map((object, index) => {
-    return {
-      ...object,
-      imageUrl: urls[index] ? Url.IMAGES_BUCKET + urls[index]: undefined,
-    };
-  });
-  return emblemImageResult;
+function processImageUrls(urls: string[]): string[] {
+  const imageUrls = urls.map((url) => Url.IMAGES_BUCKET + url);
+  return imageUrls;
 }
 
 function prepareResponse(data: EmblemsData): PokemonStat {

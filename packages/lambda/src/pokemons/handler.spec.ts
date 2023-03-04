@@ -3,8 +3,8 @@ import {
   APIGatewayProxyEventQueryStringParameters,
 } from "aws-lambda";
 import { pokemonHandler } from "./handler";
-import { getPokemonStatsByName } from "./query";
-import { IDBPokemon } from "./types";
+import { getPokemonById, getPokemonNamesAndUrls } from "./query";
+import { IDBPokemon, IDBPokemonNamesAndUrls } from "./types";
 
 jest.mock("./query");
 
@@ -12,25 +12,22 @@ describe("pokemonHandler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  describe("getPokemonStatsByName()", () => {
-    const dummyPokemonName = "venusaur";
-    const dummyType = "bronze";
+
+  describe("getPokemonById()", () => {
+    const dummyPokemonId = "0001";
     const dummyPokemonParam: APIGatewayProxyEventQueryStringParameters = {
-      name: dummyPokemonName,
-      type: dummyType,
+      id: dummyPokemonId,
     };
     const dummyPokemon: IDBPokemon = {
-      pk: `name:${dummyPokemonName}`,
-      sk: `type:${dummyType}`,
-      attack: 1,
-      special_attack: 1,
-      attack_speed: 1,
-      defense: 1,
-      special_defense: 1,
-      hp: 1,
-      critical_rate: 1,
-      cdr: 1,
-      lifesteal: 1,
+      pk: `pokemon:${dummyPokemonId}`,
+      damageType: "physical",
+      difficulty: "novice",
+      evolution: [],
+      name: "azumarill",
+      range: "melee",
+      role: "all-rounder",
+      url: "/0001.png",
+      stats: [],
     };
     const dummyResult: APIGatewayProxyResult = {
       statusCode: 200,
@@ -40,14 +37,14 @@ describe("pokemonHandler", () => {
       }),
     };
 
-    it("should succesfully return expected result when pokemon and type exist", async () => {
-      (getPokemonStatsByName as jest.Mock).mockResolvedValue(dummyPokemon);
+    it("should succesfully return expected result when pokemon exist", async () => {
+      (getPokemonById as jest.Mock).mockResolvedValue(dummyPokemon);
       const result = await pokemonHandler(dummyPokemonParam);
       expect(result).toStrictEqual(dummyResult);
     });
 
-    it("should succesfully return expected result when pokemon and type not exist", async () => {
-      (getPokemonStatsByName as jest.Mock).mockResolvedValue(undefined);
+    it("should succesfully return expected result when pokemon not exist", async () => {
+      (getPokemonById as jest.Mock).mockResolvedValue(undefined);
       const dummyInvalidDataResult = {
         ...dummyResult,
         body: JSON.stringify({
@@ -61,15 +58,54 @@ describe("pokemonHandler", () => {
       expect(result).toStrictEqual(dummyInvalidDataResult);
     });
 
-    it("should return not found when pokemon and type not provided", async () => {
+    it("should return status 400 when pokemon not found", async () => {
       const dummtInvalidResult: APIGatewayProxyResult = {
         statusCode: 400,
-        body: "Name and Type not provided",
+        body: "Pokemon not found",
       };
 
       const result = await pokemonHandler(null);
 
       expect(result).toStrictEqual(dummtInvalidResult);
+    });
+  });
+
+  describe("getPokemonNamesAndUrls()", () => {
+    const dummyLimit = "0";
+    const dummyPokemonParam: APIGatewayProxyEventQueryStringParameters = {
+      limit: dummyLimit,
+    };
+    const dummyPokemons: IDBPokemonNamesAndUrls[] = [
+      { name: "azumarill", url: "/0003.png" },
+      { name: "absol", url: "/0001.png" },
+    ];
+    const dummyResult: APIGatewayProxyResult = {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: "ok",
+        data: dummyPokemons,
+      }),
+    };
+
+    it("should succesfully return expected result when pokemon exist", async () => {
+      (getPokemonNamesAndUrls as jest.Mock).mockResolvedValue(dummyPokemons);
+      const result = await pokemonHandler(dummyPokemonParam);
+      expect(result).toStrictEqual(dummyResult);
+    });
+
+    it("should succesfully return expected result when pokemon not exist", async () => {
+      (getPokemonNamesAndUrls as jest.Mock).mockResolvedValue(undefined);
+      const dummyInvalidDataResult = {
+        ...dummyResult,
+        body: JSON.stringify({
+          status: "ok",
+          data: {},
+        }),
+      };
+
+      const result = await pokemonHandler(dummyPokemonParam);
+
+      expect(result).toStrictEqual(dummyInvalidDataResult);
     });
   });
 });
