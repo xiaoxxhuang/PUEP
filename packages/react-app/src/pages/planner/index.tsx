@@ -6,7 +6,7 @@ import {
   primaryFocusOptions,
   secondaryFocusOptions,
 } from "../../config";
-import { StatsDataOptions, EmblemsStat, PokemonOptions } from "./types";
+import { StatsDataOptions, PokemonOptions } from "./types";
 import { processEmblemsData } from "./process-emblems-data";
 
 import FilterFocus from "../../components/filter-focus";
@@ -17,7 +17,7 @@ import PokemonsContainer from "../../components/pokemons-container";
 function Planner() {
   const [primaryFocus, setPrimaryFocus] = useState("");
   const [secondaryFocus, setSecondaryFocus] = useState("");
-  const [emblemStat, setEmblemStat] = useState<EmblemsStat>({});
+  const [emblemStat, setEmblemStat] = useState<StatsDataOptions[]>([]);
   const [emblemImages, setEmblemImages] = useState<string[]>([]);
   const [pokemonImages, setPokemonImages] = useState<PokemonOptions[]>([]);
 
@@ -40,7 +40,9 @@ function Planner() {
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          const [statResult, imageUrls] = processEmblemsData(data.data.slice(0, 10));
+          const [statResult, imageUrls] = processEmblemsData(
+            data.data.slice(0, 10)
+          );
           setEmblemStat(statResult);
           setEmblemImages(imageUrls);
         });
@@ -77,10 +79,7 @@ function Planner() {
             <EmblemsContainer imageUrls={emblemImages} />
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <DisplayStats
-              options={formatStatOptions(emblemStat)}
-              title="Current Effect"
-            />
+            <DisplayStats options={emblemStat} title="Current Effect" />
           </div>
         </div>
       </div>
@@ -123,9 +122,5 @@ function processPokemonImages(datas: PokemonOptions[]): PokemonOptions[] {
 //   }
 //   return formatStatOptions(pokemonStat);
 // }
-
-function formatStatOptions(stats: EmblemsStat): StatsDataOptions[] {
-  return Object.entries(stats).map(([stat, value]) => ({ stat, value }));
-}
 
 export default Planner;

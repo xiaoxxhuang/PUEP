@@ -1,10 +1,10 @@
 import "./index.css";
 import { Url, Proxy } from "../../config";
-import { EmblemsStat, EmblemsData } from "./types";
+import { EmblemsStat, EmblemsData, StatsDataOptions } from "./types";
 
 export function processEmblemsData(
   datas: EmblemsData[]
-): [EmblemsStat, string[]] {
+): [StatsDataOptions[], string[]] {
   const statResult: EmblemsStat = {};
   const emblemImages: string[] = [];
   datas.forEach((data) => {
@@ -12,7 +12,7 @@ export function processEmblemsData(
     sumEmblemStat(prepareResponse(data), statResult);
   });
 
-  return [statResult, emblemImages];
+  return [formatStatOptions(statResult), emblemImages];
 }
 
 function processImageUrl(url: string): string {
@@ -40,4 +40,8 @@ function sumEmblemStat(data: EmblemsStat, result: EmblemsStat) {
       result[k] = parseFloat(((result[k] || 0) + (data[k] || 0)).toFixed(1));
     }
   });
+}
+
+function formatStatOptions(stats: EmblemsStat): StatsDataOptions[] {
+  return Object.entries(stats).map(([stat, value]) => ({ stat, value }));
 }
