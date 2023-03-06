@@ -17,7 +17,7 @@ import PokemonsContainer from "../../components/pokemons-container";
 function Planner() {
   const [primaryFocus, setPrimaryFocus] = useState("");
   const [secondaryFocus, setSecondaryFocus] = useState("");
-  const [pokemonChoice, setPokemonChoice] = useState("");
+  // const [pokemonChoice, setPokemonChoice] = useState("");
   const [emblemStat, setEmblemStat] = useState<StatsDataOptions[]>([]);
   const [emblemImages, setEmblemImages] = useState<string[]>([]);
   const [pokemonImages, setPokemonImages] = useState<PokemonOptions[]>([]);
