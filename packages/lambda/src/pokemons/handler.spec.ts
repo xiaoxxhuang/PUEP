@@ -73,8 +73,8 @@ describe("pokemonHandler", () => {
   describe("getPokemonNamesAndUrls()", () => {
     const dummyPokemonParam = null;
     const dummyPokemons: IDBPokemonNamesAndUrls[] = [
-      { name: "azumarill", url: "/0003.png" },
-      { name: "absol", url: "/0001.png" },
+      { pk: "pokemon:0003", name: "azumarill", url: "/0003.png" },
+      { pk: "pokemon:0001", name: "absol", url: "/0001.png" },
     ];
     const dummyResult: APIGatewayProxyResult = {
       statusCode: 200,
