@@ -25,7 +25,7 @@ export async function getPokemonNamesAndUrls(): Promise<
   const params: DynamoDB.DocumentClient.ScanInput = {
     TableName: Utils.getTableName(),
     FilterExpression: "begins_with(#pk, :prefix) ",
-    ProjectionExpression: "#name, #url",
+    ProjectionExpression: "#pk, #name, #url",
     ExpressionAttributeNames: {
       "#pk": "pk",
       "#name": "name",

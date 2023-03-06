@@ -33,6 +33,7 @@ export interface EmblemsData {
 }
 
 export interface PokemonOptions {
+  pk: string;
   name: string;
   url: string;
 }

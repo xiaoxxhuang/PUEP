@@ -32,6 +32,7 @@ export interface IDBPokemon {
 }
 
 export interface IDBPokemonNamesAndUrls {
+  pk: string;
   name: string;
   url: string;
 }

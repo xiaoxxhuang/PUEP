@@ -17,6 +17,7 @@ import PokemonsContainer from "../../components/pokemons-container";
 function Planner() {
   const [primaryFocus, setPrimaryFocus] = useState("");
   const [secondaryFocus, setSecondaryFocus] = useState("");
+  const [pokemonChoice, setPokemonChoice] = useState("");
   const [emblemStat, setEmblemStat] = useState<StatsDataOptions[]>([]);
   const [emblemImages, setEmblemImages] = useState<string[]>([]);
   const [pokemonImages, setPokemonImages] = useState<PokemonOptions[]>([]);
@@ -29,6 +30,10 @@ function Planner() {
   const handleSecondaryFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSecondaryFocus(event.target.value);
   };
+  const handlePokemonChoice = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log(event.currentTarget)
+  };
+
 
   useEffect(() => {
     if (primaryFocus) {
@@ -86,7 +91,7 @@ function Planner() {
       <div>
         <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <PokemonsContainer options={pokemonImages} />
+            <PokemonsContainer options={pokemonImages} onClick={handlePokemonChoice}/>
           </div>
           {/* <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStats
@@ -105,6 +110,7 @@ function Planner() {
 
 function processPokemonImages(datas: PokemonOptions[]): PokemonOptions[] {
   return datas.map((option: PokemonOptions) => ({
+    pk: option.pk,
     name: option.name,
     url: Url.IMAGES_BUCKET + Proxy.POKEMONS + option.url,
   }));

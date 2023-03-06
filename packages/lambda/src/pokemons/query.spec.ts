@@ -88,8 +88,8 @@ describe("Dynamodb query", () => {
 
   describe("getPokemonNamesAndUrls()", () => {
     const dummyPokemons: IDBPokemonNamesAndUrls[] = [
-      { name: "azumarill", url: "/0003.png" },
-      { name: "absol", url: "/0001.png" },
+      { pk: "pokemon:0003", name: "azumarill", url: "/0003.png" },
+      { pk: "pokemon:0001", name: "absol", url: "/0001.png" },
     ];
 
     it("shoud successfully get pokemon details by id", async () => {
