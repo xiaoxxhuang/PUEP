@@ -8,6 +8,21 @@
   overflow-y: auto;
 }
 
+.puep-pokemon-selected {
+  padding: 5px;
+  margin: 5px;
+  display: inline-block;
+  min-width: 80px;
+  height: 120px;
+  background-color: rgb(27, 36, 77);
+  border-radius: 10%;
+
+  div {
+    font-size: 14px;
+    color: white;
+  }
+}
+
 .puep-pokemon {
   padding: 5px;
   margin: 5px;

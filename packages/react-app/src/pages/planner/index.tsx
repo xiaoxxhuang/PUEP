@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./index.css";
 import {
   Url,
@@ -6,19 +7,50 @@ import {
   primaryFocusOptions,
   secondaryFocusOptions,
 } from "../../config";
-import { StatsDataOptions, PokemonOptions } from "./types";
-import { processEmblemsData } from "./process-emblems-data";
+import {
+  StatDataOptions,
+  PokemonOptions,
+  PokemonStat,
+  EmblemsStat,
+  StatData,
+} from "./types";
+import {
+  processEmblemsData,
+  processPokemonImages,
+  processPokemonStat,
+} from "./process-data";
 
 import FilterFocus from "../../components/filter-focus";
-import DisplayStats from "../../components/display-stats";
+import DisplayStat from "../../components/display-stat";
 import EmblemsContainer from "../../components/emblems-container";
 import PokemonsContainer from "../../components/pokemons-container";
 
+const pokemonInitialStat: PokemonStat = {
+  hp: 0,
+  heal: 0,
+  attack: 0,
+  defense: 0,
+  special_attack: 0,
+  special_defense: 0,
+  cooldown_rate: 0,
+  critical_rate: 0,
+  movement_speed: 0,
+  lifesteal: 0,
+  attack_speed: 0,
+  tenacity: 0,
+};
+
 function Planner() {
-  const [primaryFocus, setPrimaryFocus] = useState("");
-  const [secondaryFocus, setSecondaryFocus] = useState("");
-  // const [pokemonChoice, setPokemonChoice] = useState("");
-  const [emblemStat, setEmblemStat] = useState<StatsDataOptions[]>([]);
+  const { pfocus, sfocus, pokemonId } = useParams();
+  const [primaryFocus, setPrimaryFocus] = useState(pfocus ? pfocus : "");
+  const [secondaryFocus, setSecondaryFocus] = useState(sfocus ? sfocus : "");
+  const [pokemonChoiceId, setPokemonChoiceId] = useState(
+    pokemonId ? pokemonId : ""
+  );
+  const [pokemonChoiceName, setPokemonChoiceName] = useState("");
+  const [pokemonStat, setPokemonStat] =
+    useState<PokemonStat>(pokemonInitialStat);
+  const [emblemStat, setEmblemStat] = useState<EmblemsStat>({});
   const [emblemImages, setEmblemImages] = useState<string[]>([]);
   const [pokemonImages, setPokemonImages] = useState<PokemonOptions[]>([]);
 
@@ -31,9 +63,19 @@ function Planner() {
     setSecondaryFocus(event.target.value);
   };
   const handlePokemonChoice = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log(event.currentTarget)
+    const targetId = event.currentTarget.getAttribute("data-key");
+    const targetName = event.currentTarget.getAttribute("data-name");
+    targetId && setPokemonChoiceId(targetId);
+    targetName && setPokemonChoiceName(targetName);
   };
 
+  useEffect(() => {
+    fetch(Url.API + Proxy.POKEMONS)
+      .then((response) => response.json())
+      .then((data) => {
+        setPokemonImages(processPokemonImages(data.data));
+      });
+  }, []);
 
   useEffect(() => {
     if (primaryFocus) {
@@ -55,12 +97,14 @@ function Planner() {
   }, [primaryFocus, secondaryFocus]);
 
   useEffect(() => {
-    fetch(Url.API + Proxy.POKEMONS)
-      .then((response) => response.json())
-      .then((data) => {
-        setPokemonImages(processPokemonImages(data.data));
-      });
-  }, []);
+    if (pokemonChoiceId && primaryFocus) {
+      fetch(Url.API + Proxy.POKEMONS + `?id=` + pokemonChoiceId)
+        .then((response) => response.json())
+        .then((data) => {
+          setPokemonStat(data.data.stats[14]);
+        });
+    }
+  }, [pokemonChoiceId, primaryFocus, secondaryFocus]);
 
   return (
     <div className="puep-app">
@@ -84,21 +128,30 @@ function Planner() {
             <EmblemsContainer imageUrls={emblemImages} />
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <DisplayStats options={emblemStat} title="Current Effect" />
+            <DisplayStat
+              options={formatStatOptions(emblemStat)}
+              title="Current Effect"
+            />
           </div>
         </div>
       </div>
       <div>
         <div className="row middle-xs around-xs puep-div">
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <PokemonsContainer options={pokemonImages} onClick={handlePokemonChoice}/>
-          </div>
-          {/* <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-            <DisplayStats
-              options={calculatePokemonStat(emblemStat, pokemonStat)}
-              title="Effect on Pokemon: Venusaur"
+            <PokemonsContainer
+              options={pokemonImages}
+              value={pokemonChoiceId}
+              onClick={handlePokemonChoice}
             />
-          </div> */}
+          </div>
+          <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+            <DisplayStat
+              options={formatStatOptions(
+                processPokemonStat(emblemStat, pokemonStat)
+              )}
+              title={"Effect on Pokemon: " + pokemonChoiceName.toUpperCase()}
+            />
+          </div>
         </div>
       </div>
       <div className="puep-app-footer">
@@ -108,25 +161,8 @@ function Planner() {
   );
 }
 
-function processPokemonImages(datas: PokemonOptions[]): PokemonOptions[] {
-  return datas.map((option: PokemonOptions) => ({
-    pk: option.pk,
-    name: option.name,
-    url: Url.IMAGES_BUCKET + Proxy.POKEMONS + option.url,
-  }));
+function formatStatOptions(stats: EmblemsStat | StatData): StatDataOptions[] {
+  return Object.entries(stats).map(([stat, value]) => ({ stat, value }));
 }
-
-// function calculatePokemonStat(
-//   emblemStat: PokemonStat,
-//   pokemonStat: PokemonStat
-// ) {
-//   for (const stat in emblemStat) {
-//     const key = stat as keyof PokemonStat;
-//     if (pokemonStat[key] && emblemStat[key]) {
-//       pokemonStat[key]! += emblemStat[key]!;
-//     }
-//   }
-//   return formatStatOptions(pokemonStat);
-// }
 
 export default Planner;

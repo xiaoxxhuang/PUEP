@@ -1,9 +1,9 @@
 import React from "react";
 import "./index.css";
-import { StatsDataOptions } from "../../pages/planner/types";
+import { StatDataOptions } from "../../pages/planner/types";
 
 export interface Props extends React.HTMLProps<HTMLDivElement> {
-  options: StatsDataOptions[];
+  options: StatDataOptions[];
   title: string;
 }
 
@@ -18,7 +18,7 @@ function capitalizeTitle(str: string) {
   return title;
 }
 
-function DisplayStats(props: Props) {
+function DisplayStat(props: Props) {
   const { options, title } = props;
 
   const stats = options.map((option) => (
@@ -35,4 +35,4 @@ function DisplayStats(props: Props) {
   );
 }
 
-export default DisplayStats;
+export default DisplayStat;

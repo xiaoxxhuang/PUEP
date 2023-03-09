@@ -12,6 +12,7 @@ const App = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<Planner />} />
+          <Route path="/planner/:pfocus/:sfocus/:pokemonId" element={<Planner />} />
           <Route path="/emblems" element={<Emblems />} />
           <Route path="/pokemons" element={<Pokemons />} />
         </Routes>
