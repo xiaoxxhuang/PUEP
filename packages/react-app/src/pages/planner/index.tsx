@@ -113,12 +113,14 @@ function Planner() {
           options={primaryFocusOptions}
           children="Primary Focus:"
           value={primaryFocus}
+          disabled={secondaryFocus}
           onChange={handlePrimaryFocus}
         />
         <FilterFocus
           options={secondaryFocusOptions}
           children="Secondary Focus:"
           value={secondaryFocus}
+          disabled={primaryFocus}
           onChange={handleSecondaryFocus}
         />
       </div>

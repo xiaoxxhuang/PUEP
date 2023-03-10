@@ -8,17 +8,19 @@ export interface RadioButtonOptions {
 export interface Props {
   options: RadioButtonOptions[];
   value: string;
+  disabled?: string;
   children: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function FilterFocus(props: Props) {
-  const { options, value, children, onChange } = props;
+  const { options, value, disabled, children, onChange } = props;
 
   const radioButtons = options.map((option) => (
     <label key={option.value} className="puep-radiobutton-label">
       <input
         type="radio"
+        disabled={option.value.slice(0, -1) === disabled?.slice(0, -1)}
         value={option.value}
         checked={option.value === value}
         onChange={onChange}
@@ -32,9 +34,7 @@ function FilterFocus(props: Props) {
         <span className="puep-label">{children}</span>
       </div>
       <div className="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-        <div className="puep-radiobutton-div">
-          {radioButtons}
-        </div>
+        <div className="puep-radiobutton-div">{radioButtons}</div>
       </div>
     </div>
   );
