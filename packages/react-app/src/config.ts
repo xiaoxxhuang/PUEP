@@ -8,26 +8,15 @@ export const Proxy = {
   POKEMONS: "pokemons",
 };
 
-export const primaryFocusOptions = [
-  { value: "hp1", label: "HP" },
-  { value: "attack1", label: "Attack" },
-  { value: "special_attack1", label: "Special Attack" },
-  { value: "defense1", label: "Defense" },
-  { value: "special_defense1", label: "Special Defense" },
-  { value: "movement_speed1", label: "Movement Speed" },
-  { value: "critical_rate1", label: "Critical Hit Rate" },
-  { value: "cooldown_rate1", label: "Cooldown Rate" },
-];
-
-export const secondaryFocusOptions = [
-  { value: "hp2", label: "HP" },
-  { value: "attack2", label: "Attack" },
-  { value: "special_attack2", label: "Special Attack" },
-  { value: "defense2", label: "Defense" },
-  { value: "special_defense2", label: "Special Defense" },
-  { value: "movement_speed2", label: "Movement Speed" },
-  { value: "critical_rate2", label: "Critical Hit Rate" },
-  { value: "cooldown_rate2", label: "Cooldown Rate" },
+export const focusOptions = [
+  { value: "hp", label: "HP" },
+  { value: "attack", label: "Attack" },
+  { value: "special_attack", label: "Special Attack" },
+  { value: "defense", label: "Defense" },
+  { value: "special_defense", label: "Special Defense" },
+  { value: "movement_speed", label: "Movement Speed" },
+  { value: "critical_rate", label: "Critical Hit Rate" },
+  { value: "cooldown_rate", label: "Cooldown Rate" },
 ];
 
 export const emblemsContainerOptions = [

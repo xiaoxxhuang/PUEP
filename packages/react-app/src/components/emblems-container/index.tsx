@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css";
+import "./index.scss";
 import { emblemsContainerOptions } from "../../config";
 
 export interface Props extends React.HTMLProps<HTMLDivElement> {
@@ -12,12 +12,12 @@ function EmblemsContainer(props: Props) {
   const emblems = emblemsContainerOptions.map((option, index) => (
     <div
       key={`emblem_${index}`}
-      className="puep-emblem"
+      className="emblem"
       style={{
         transform: `rotate(${option.rotateDegree}deg) translate(125px) rotate(-${option.rotateDegree}deg)`,
       }}
     >
-      <div className="puep-circle">
+      <div className="circle">
         {imageUrls[index] && (
           <img src={imageUrls[index]} alt="" height="85px" width="85px"></img>
         )}
@@ -25,7 +25,7 @@ function EmblemsContainer(props: Props) {
     </div>
   ));
   return (
-    <div className="puep-emblems-container">
+    <div className="emblems-container">
       {emblems}
       <span>{imageUrls.length}/10</span>
     </div>

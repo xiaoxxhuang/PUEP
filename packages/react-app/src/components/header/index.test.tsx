@@ -1,12 +1,12 @@
 import { render } from "@testing-library/react";
 import { MemoryRouter } from 'react-router-dom';
-import PuepHeader from "./index";
+import Header from "./index";
 
-describe('Render PuepHeader', () => {
+describe('Render Header', () => {
   it('Should renders header and links correctly', () => {
     const { getByAltText, getByText } = render(
       <MemoryRouter>
-        <PuepHeader />
+        <Header />
       </MemoryRouter>
     );
   
@@ -15,7 +15,7 @@ describe('Render PuepHeader', () => {
 
     const plannerLink = getByText('Planner');
     expect(plannerLink).toBeInTheDocument();
-    expect(plannerLink.getAttribute('href')).toBe('/');
+    expect(plannerLink.getAttribute('href')).toBe('/planner');
 
     const emblemsLink = getByText('Emblems');
     expect(emblemsLink).toBeInTheDocument();

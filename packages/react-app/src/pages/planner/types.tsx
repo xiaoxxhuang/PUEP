@@ -60,6 +60,7 @@ export interface StatData {
 export interface StatDataOptions {
   stat: string;
   value: string;
+  original_value?: string;
 }
 
 export interface PokemonOptions {
@@ -67,3 +68,18 @@ export interface PokemonOptions {
   name: string;
   url: string;
 }
+
+export const pokemonInitialStat: PokemonStat = {
+  hp: 0,
+  heal: 0,
+  attack: 0,
+  defense: 0,
+  special_attack: 0,
+  special_defense: 0,
+  cooldown_rate: 0,
+  critical_rate: 0,
+  movement_speed: 0,
+  lifesteal: 0,
+  attack_speed: 0,
+  tenacity: 0,
+};

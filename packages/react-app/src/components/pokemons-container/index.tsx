@@ -5,7 +5,7 @@ import { PokemonOptions } from "../../pages/planner/types";
 export interface Props {
   options: PokemonOptions[];
   value: string;
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 function PokemonsContainer(props: Props) {
@@ -15,20 +15,16 @@ function PokemonsContainer(props: Props) {
     <div
       key={option.pk}
       onClick={onClick}
-      data-key={option.pk.split(":")[1]}
+      data-key={option.pk}
       data-name={option.name}
-      className={
-        value === option.pk.split(":")[1]
-          ? "puep-pokemon-selected"
-          : "puep-pokemon"
-      }
+      className={value === option.pk ? "pokemon-selected" : "pokemon"}
     >
       <img src={option.url} alt="" height="88px" width="88px" />
       <div>{option.name.toUpperCase()}</div>
     </div>
   ));
 
-  return <div className="puep-pokemons-container">{pokemons}</div>;
+  return <div className="pokemons-container">{pokemons}</div>;
 }
 
 export default PokemonsContainer;

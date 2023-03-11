@@ -1,4 +1,6 @@
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 import FilterFocus from "./index";
 
 describe("Render RadioButtonGroup", () => {
@@ -12,7 +14,7 @@ describe("Render RadioButtonGroup", () => {
       <FilterFocus
         options={options}
         value="option1"
-        children="Focus"
+        title="Focus"
         onChange={() => {}}
       />
     );
@@ -25,7 +27,7 @@ describe("Render RadioButtonGroup", () => {
       <FilterFocus
         options={options}
         value="option1"
-        children="Focus"
+        title="Focus"
         onChange={() => {}}
       />
     );

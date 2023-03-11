@@ -1,21 +1,12 @@
 import React from "react";
-import "./index.css";
+import { BsArrowRight } from "react-icons/bs";
+import "./index.scss";
 import { StatDataOptions } from "../../pages/planner/types";
+import { capitalize } from "../../utils";
 
 export interface Props extends React.HTMLProps<HTMLDivElement> {
   options: StatDataOptions[];
   title: string;
-}
-
-function capitalizeTitle(str: string) {
-  const title = str
-    .toLowerCase()
-    .split("_")
-    .map((word) => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
-  return title;
 }
 
 function DisplayStat(props: Props) {
@@ -23,14 +14,22 @@ function DisplayStat(props: Props) {
 
   const stats = options.map((option) => (
     <div key={option.stat} className="display-stat">
-      <span>{capitalizeTitle(option.stat)}</span>
-      <span>{option.value}</span>
+      <span>{capitalize(option.stat)}</span>
+      <span>
+        {option.original_value && (
+          <>
+            <span>{option.original_value}</span>
+            <BsArrowRight style={{ padding: "0px 5px" }} />
+          </>
+        )}
+        <span>{option.value}</span>
+      </span>
     </div>
   ));
   return (
     <div className="display-stats-container">
-      <h1 className="display-title">{title}</h1>
-      <div className="display-stats">{stats}</div>
+      <h1>{title}</h1>
+      <div>{stats}</div>
     </div>
   );
 }

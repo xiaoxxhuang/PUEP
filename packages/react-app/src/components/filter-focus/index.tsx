@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css";
+import "./index.scss";
 
 export interface RadioButtonOptions {
   value: string;
@@ -7,20 +7,20 @@ export interface RadioButtonOptions {
 }
 export interface Props {
   options: RadioButtonOptions[];
+  title: string;
   value: string;
-  disabled?: string;
-  children: string;
+  disabledFocus?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function FilterFocus(props: Props) {
-  const { options, value, disabled, children, onChange } = props;
+  const { options, title, value, disabledFocus, onChange } = props;
 
   const radioButtons = options.map((option) => (
     <label key={option.value} className="puep-radiobutton-label">
       <input
         type="radio"
-        disabled={option.value.slice(0, -1) === disabled?.slice(0, -1)}
+        disabled={option.value === disabledFocus}
         value={option.value}
         checked={option.value === value}
         onChange={onChange}
@@ -31,7 +31,7 @@ function FilterFocus(props: Props) {
   return (
     <div className="puep-radiobuttongroup-container row">
       <div className="col-xs-10 col-sm-2 col-md-2 col-lg-2">
-        <span className="puep-label">{children}</span>
+        <span className="puep-label">{title}</span>
       </div>
       <div className="col-xs-10 col-sm-8 col-md-8 col-lg-8">
         <div className="puep-radiobutton-div">{radioButtons}</div>

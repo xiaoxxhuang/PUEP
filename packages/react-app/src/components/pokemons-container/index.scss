@@ -1,4 +1,4 @@
-.puep-pokemons-container {
+.pokemons-container {
   display: inline-block;
   background-color: white;
   justify-content: space-evenly;
@@ -8,7 +8,7 @@
   overflow-y: auto;
 }
 
-.puep-pokemon-selected {
+.pokemon-selected {
   padding: 5px;
   margin: 5px;
   display: inline-block;
@@ -23,7 +23,7 @@
   }
 }
 
-.puep-pokemon {
+.pokemon {
   padding: 5px;
   margin: 5px;
   display: inline-block;

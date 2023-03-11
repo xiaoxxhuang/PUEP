@@ -6,13 +6,14 @@ import {
   PokemonOptions,
   PokemonStat,
   StatData,
+  StatDataOptions,
 } from "./types";
 
 export function processPokemonImages(
   datas: PokemonOptions[]
 ): PokemonOptions[] {
   return datas.map((option: PokemonOptions) => ({
-    pk: option.pk,
+    pk: option.pk.split(":")[1],
     name: option.name,
     url: Url.IMAGES_BUCKET + Proxy.POKEMONS + option.url,
   }));
@@ -34,10 +35,29 @@ export function processEmblemsData(
 export function processPokemonStat(
   emblemStat: EmblemsStat,
   pokemonStat: PokemonStat
-): StatData {
-  const preparePokemonStat = preparePokemonData(pokemonStat)
+): [StatData, StatData] {
+  const preparePokemonStat = preparePokemonData(pokemonStat);
   sumStat(emblemStat, preparePokemonStat);
-  return preparePokemonResponse(preparePokemonStat);
+  return [
+    preparePokemonResponse(preparePokemonStat),
+    preparePokemonResponse(preparePokemonData(pokemonStat))
+  ];
+}
+
+export function formatEmblemStatOptions(stat: EmblemsStat): StatDataOptions[] {
+  return Object.entries(stat).map(([stat, value]) => ({ stat, value }));
+}
+
+export function formatPokemonStatOptions(stats: StatData[]) {
+  const result = Object.entries(stats[0]).map(([stat, value]) => {
+    const key = stat as keyof StatData;
+    return {
+      stat: stat,
+      value: value,
+      original_value: stats[1][key],
+    };
+  });
+  return result;
 }
 
 function sumStat(data: EmblemsStat, result: EmblemsStat) {

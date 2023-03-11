@@ -1,72 +1,65 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import "./index.css";
+import { Url, Proxy, focusOptions } from "../../config";
 import {
-  Url,
-  Proxy,
-  primaryFocusOptions,
-  secondaryFocusOptions,
-} from "../../config";
-import {
-  StatDataOptions,
+  pokemonInitialStat,
   PokemonOptions,
   PokemonStat,
   EmblemsStat,
-  StatData,
 } from "./types";
 import {
   processEmblemsData,
   processPokemonImages,
   processPokemonStat,
+  formatEmblemStatOptions,
+  formatPokemonStatOptions,
 } from "./process-data";
 
 import FilterFocus from "../../components/filter-focus";
 import DisplayStat from "../../components/display-stat";
 import EmblemsContainer from "../../components/emblems-container";
 import PokemonsContainer from "../../components/pokemons-container";
-
-const pokemonInitialStat: PokemonStat = {
-  hp: 0,
-  heal: 0,
-  attack: 0,
-  defense: 0,
-  special_attack: 0,
-  special_defense: 0,
-  cooldown_rate: 0,
-  critical_rate: 0,
-  movement_speed: 0,
-  lifesteal: 0,
-  attack_speed: 0,
-  tenacity: 0,
-};
+import { capitalize } from "../../utils";
 
 function Planner() {
-  const { pfocus, sfocus, pokemonId } = useParams();
-  const [primaryFocus, setPrimaryFocus] = useState(pfocus ? pfocus : "");
-  const [secondaryFocus, setSecondaryFocus] = useState(sfocus ? sfocus : "");
-  const [pokemonChoiceId, setPokemonChoiceId] = useState(
-    pokemonId ? pokemonId : ""
-  );
+  const [urlParam, setUrlParam] = useSearchParams();
   const [pokemonChoiceName, setPokemonChoiceName] = useState("");
-  const [pokemonStat, setPokemonStat] =
-    useState<PokemonStat>(pokemonInitialStat);
   const [emblemStat, setEmblemStat] = useState<EmblemsStat>({});
   const [emblemImages, setEmblemImages] = useState<string[]>([]);
+  const [initialPokemonStat, setInitialPokemonStat] =
+    useState<PokemonStat>(pokemonInitialStat);
   const [pokemonImages, setPokemonImages] = useState<PokemonOptions[]>([]);
+
+  const primaryFocus = urlParam.get("primary") || "";
+  const secondaryFocus = urlParam.get("secondary") || "";
+  const pokemonChoiceId = urlParam.get("pokemon") || "";
 
   console.log("checking render counts");
 
   const handlePrimaryFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrimaryFocus(event.target.value);
+    if (secondaryFocus !== "") {
+      setUrlParam({ primary: event.target.value, secondary: secondaryFocus });
+    } else {
+      setUrlParam({ primary: event.target.value });
+    }
   };
   const handleSecondaryFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSecondaryFocus(event.target.value);
+    if (primaryFocus !== "") {
+      setUrlParam({ primary: primaryFocus, secondary: event.target.value });
+    }
   };
   const handlePokemonChoice = (event: React.MouseEvent<HTMLDivElement>) => {
     const targetId = event.currentTarget.getAttribute("data-key");
     const targetName = event.currentTarget.getAttribute("data-name");
-    targetId && setPokemonChoiceId(targetId);
-    targetName && setPokemonChoiceName(targetName);
+    if (primaryFocus !== "" && targetId) {
+      targetName && setPokemonChoiceName(targetName);
+      setUrlParam({
+        primary: primaryFocus,
+        secondary: secondaryFocus,
+        pokemon: targetId,
+      });
+    }
   };
 
   useEffect(() => {
@@ -79,10 +72,9 @@ function Planner() {
 
   useEffect(() => {
     if (primaryFocus) {
-      let url =
-        Url.API + Proxy.EMBLEMS + `?primaryFocus=` + primaryFocus.split("1")[0];
+      let url = Url.API + Proxy.EMBLEMS + `?primaryFocus=` + primaryFocus;
       if (secondaryFocus) {
-        url = url + `&secondaryFocus=` + secondaryFocus.split("2")[0];
+        url = url + `&secondaryFocus=` + secondaryFocus;
       }
       fetch(url)
         .then((response) => response.json())
@@ -101,7 +93,7 @@ function Planner() {
       fetch(Url.API + Proxy.POKEMONS + `?id=` + pokemonChoiceId)
         .then((response) => response.json())
         .then((data) => {
-          setPokemonStat(data.data.stats[14]);
+          setInitialPokemonStat(data.data.stats[14]);
         });
     }
   }, [pokemonChoiceId, primaryFocus, secondaryFocus]);
@@ -110,17 +102,17 @@ function Planner() {
     <div className="puep-app">
       <div>
         <FilterFocus
-          options={primaryFocusOptions}
-          children="Primary Focus:"
+          title="Primary Focus:"
+          options={focusOptions}
           value={primaryFocus}
-          disabled={secondaryFocus}
+          disabledFocus={secondaryFocus}
           onChange={handlePrimaryFocus}
         />
         <FilterFocus
-          options={secondaryFocusOptions}
-          children="Secondary Focus:"
+          title="Secondary Focus:"
+          options={focusOptions}
           value={secondaryFocus}
-          disabled={primaryFocus}
+          disabledFocus={primaryFocus}
           onChange={handleSecondaryFocus}
         />
       </div>
@@ -131,7 +123,7 @@ function Planner() {
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStat
-              options={formatStatOptions(emblemStat)}
+              options={formatEmblemStatOptions(emblemStat)}
               title="Current Effect"
             />
           </div>
@@ -148,10 +140,10 @@ function Planner() {
           </div>
           <div className="col-xs-10 col-sm-6 col-md-6 col-lg-6">
             <DisplayStat
-              options={formatStatOptions(
-                processPokemonStat(emblemStat, pokemonStat)
+              options={formatPokemonStatOptions(
+                processPokemonStat(emblemStat, initialPokemonStat)
               )}
-              title={"Effect on Pokemon: " + pokemonChoiceName.toUpperCase()}
+              title={"Effect on Pokemon: " + capitalize(pokemonChoiceName)}
             />
           </div>
         </div>
@@ -161,10 +153,6 @@ function Planner() {
       </div>
     </div>
   );
-}
-
-function formatStatOptions(stats: EmblemsStat | StatData): StatDataOptions[] {
-  return Object.entries(stats).map(([stat, value]) => ({ stat, value }));
 }
 
 export default Planner;
