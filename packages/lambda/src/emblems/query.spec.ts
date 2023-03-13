@@ -121,7 +121,7 @@ describe("Dynamodb query", () => {
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
           ":focus": 0,
-          ":type": "gold",
+          ":type": "bronze",
         },
       });
     });
@@ -150,7 +150,7 @@ describe("Dynamodb query", () => {
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
           ":focus": 0,
-          ":type": "gold",
+          ":type": "bronze",
         },
       });
     });
@@ -179,7 +179,7 @@ describe("Dynamodb query", () => {
         ExpressionAttributeValues: {
           ":prefix": "emblem:",
           ":focus": 0,
-          ":type": "gold",
+          ":type": "bronze",
         },
       });
     });

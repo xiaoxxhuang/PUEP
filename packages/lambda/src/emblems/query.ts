@@ -40,7 +40,7 @@ export async function getEmblemsByFocuses(
     ExpressionAttributeValues: {
       ":prefix": "emblem:",
       ":primaryFocus": 0,
-      ":type": "gold",
+      ":type": "bronze",
     },
   };
 
@@ -68,7 +68,7 @@ export async function getEmblemsByPrimaryFocus(
     ExpressionAttributeValues: {
       ":prefix": "emblem:",
       ":focus": 0,
-      ":type": "gold",
+      ":type": "bronze",
     },
   };
 

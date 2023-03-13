@@ -1,0 +1,26 @@
+.display-stats-container {
+  max-width: 350px;
+  margin: 40px;
+  h1 {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: black;
+    border: none;
+    border-bottom: 1px solid black;
+    padding: 0px 20px;
+    margin: 0px auto;
+  }
+  & > div {
+    display: block;
+    position: relative;
+    padding: 20px;
+  }
+}
+
+.display-stat {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
