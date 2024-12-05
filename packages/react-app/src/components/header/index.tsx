@@ -2,10 +2,10 @@ import "./index.scss";
 import { NavLink } from "react-router-dom";
 const logo = require("../../images/pu-logo.webp");
 
-function PuepHeader() {
+function Header() {
   return (
-    <header className="puep-header">
-      <div className="puep-header-div">
+    <header className="header">
+      <div className="header-div">
         <img
           src={logo}
           alt="Pokemon Unite Logo"
@@ -15,7 +15,7 @@ function PuepHeader() {
         <nav>
           <ul>
             <li>
-              <NavLink to="/">Planner</NavLink>
+              <NavLink reloadDocument to="/planner">Planner</NavLink>
             </li>
             <li>
               <NavLink to="/emblems">Emblems</NavLink>
@@ -30,4 +30,4 @@ function PuepHeader() {
   );
 }
 
-export default PuepHeader;
+export default Header;
